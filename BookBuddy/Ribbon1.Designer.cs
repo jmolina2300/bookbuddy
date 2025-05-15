@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
-            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem1 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
-            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem2 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
+            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem3 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
+            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem4 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
             this.tab1 = new Microsoft.Office.Tools.Ribbon.RibbonTab();
             this.group1 = new Microsoft.Office.Tools.Ribbon.RibbonGroup();
             this.box4 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
@@ -55,7 +55,13 @@
             this.separator3 = new Microsoft.Office.Tools.Ribbon.RibbonSeparator();
             this.btn_go_signFlip = new Microsoft.Office.Tools.Ribbon.RibbonButton();
             this.group3 = new Microsoft.Office.Tools.Ribbon.RibbonGroup();
-            this.btn_undo = new Microsoft.Office.Tools.Ribbon.RibbonButton();
+            this.box7 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
+            this.label4 = new Microsoft.Office.Tools.Ribbon.RibbonLabel();
+            this.box8 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
+            this.ed_cellCleanup_column = new Microsoft.Office.Tools.Ribbon.RibbonEditBox();
+            this.ed_cellCleanup_characters = new Microsoft.Office.Tools.Ribbon.RibbonEditBox();
+            this.separator4 = new Microsoft.Office.Tools.Ribbon.RibbonSeparator();
+            this.btn_go_cellCleanup = new Microsoft.Office.Tools.Ribbon.RibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.box4.SuspendLayout();
@@ -66,6 +72,8 @@
             this.box5.SuspendLayout();
             this.box6.SuspendLayout();
             this.group3.SuspendLayout();
+            this.box7.SuspendLayout();
+            this.box8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -86,7 +94,7 @@
             this.group1.Items.Add(this.box2);
             this.group1.Items.Add(this.separator2);
             this.group1.Items.Add(this.btn_go);
-            this.group1.Label = "Quick Autofill";
+            this.group1.Label = "Description Auto Filler";
             this.group1.Name = "group1";
             // 
             // box4
@@ -96,7 +104,7 @@
             // 
             // label1
             // 
-            this.label1.Label = "Source Column";
+            this.label1.Label = "Source";
             this.label1.Name = "label1";
             // 
             // box1
@@ -131,7 +139,7 @@
             // 
             // label2
             // 
-            this.label2.Label = "Destination Column";
+            this.label2.Label = "Destination";
             this.label2.Name = "label2";
             // 
             // box2
@@ -184,7 +192,7 @@
             // 
             // label3
             // 
-            this.label3.Label = "Source Column";
+            this.label3.Label = "Source";
             this.label3.Name = "label3";
             // 
             // box6
@@ -202,10 +210,10 @@
             // 
             // cb_pickSign
             // 
-            ribbonDropDownItem1.Label = "+ Positive";
-            ribbonDropDownItem2.Label = "- Negative";
-            this.cb_pickSign.Items.Add(ribbonDropDownItem1);
-            this.cb_pickSign.Items.Add(ribbonDropDownItem2);
+            ribbonDropDownItem3.Label = "+ Positive";
+            ribbonDropDownItem4.Label = "- Negative";
+            this.cb_pickSign.Items.Add(ribbonDropDownItem3);
+            this.cb_pickSign.Items.Add(ribbonDropDownItem4);
             this.cb_pickSign.Label = "Sign";
             this.cb_pickSign.Name = "cb_pickSign";
             this.cb_pickSign.SizeString = "all positive";
@@ -226,18 +234,56 @@
             // 
             // group3
             // 
-            this.group3.Items.Add(this.btn_undo);
-            this.group3.Label = "group3";
+            this.group3.Items.Add(this.box7);
+            this.group3.Items.Add(this.box8);
+            this.group3.Items.Add(this.separator4);
+            this.group3.Items.Add(this.btn_go_cellCleanup);
+            this.group3.Label = "Cell Cleanup";
             this.group3.Name = "group3";
             // 
-            // btn_undo
+            // box7
             // 
-            this.btn_undo.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btn_undo.Enabled = false;
-            this.btn_undo.Label = "Undo";
-            this.btn_undo.Name = "btn_undo";
-            this.btn_undo.ShowImage = true;
-            this.btn_undo.Click += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.btn_undo_Click);
+            this.box7.Items.Add(this.label4);
+            this.box7.Name = "box7";
+            // 
+            // label4
+            // 
+            this.label4.Label = "Remove Characters";
+            this.label4.Name = "label4";
+            // 
+            // box8
+            // 
+            this.box8.Items.Add(this.ed_cellCleanup_column);
+            this.box8.Items.Add(this.ed_cellCleanup_characters);
+            this.box8.Name = "box8";
+            // 
+            // ed_cellCleanup_column
+            // 
+            this.ed_cellCleanup_column.Label = "Column";
+            this.ed_cellCleanup_column.Name = "ed_cellCleanup_column";
+            this.ed_cellCleanup_column.SizeString = "aaa";
+            this.ed_cellCleanup_column.Text = null;
+            // 
+            // ed_cellCleanup_characters
+            // 
+            this.ed_cellCleanup_characters.Label = "Characters";
+            this.ed_cellCleanup_characters.Name = "ed_cellCleanup_characters";
+            this.ed_cellCleanup_characters.SizeString = "aaaaaaaa";
+            this.ed_cellCleanup_characters.SuperTip = "Enter characters to remove. Do not use spaces or commas to separate them.";
+            this.ed_cellCleanup_characters.Text = null;
+            // 
+            // separator4
+            // 
+            this.separator4.Name = "separator4";
+            // 
+            // btn_go_cellCleanup
+            // 
+            this.btn_go_cellCleanup.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btn_go_cellCleanup.Image = ((System.Drawing.Image)(resources.GetObject("btn_go_cellCleanup.Image")));
+            this.btn_go_cellCleanup.Label = "Apply Cleanup";
+            this.btn_go_cellCleanup.Name = "btn_go_cellCleanup";
+            this.btn_go_cellCleanup.ShowImage = true;
+            this.btn_go_cellCleanup.Click += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.btn_go_cellCleanup_Click);
             // 
             // Ribbon1
             // 
@@ -265,6 +311,10 @@
             this.box6.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
+            this.box7.ResumeLayout(false);
+            this.box7.PerformLayout();
+            this.box8.ResumeLayout(false);
+            this.box8.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -295,7 +345,13 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label3;
         internal Microsoft.Office.Tools.Ribbon.RibbonComboBox cb_pickSign;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btn_undo;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box7;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box8;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ed_cellCleanup_column;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btn_go_cellCleanup;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator4;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label4;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ed_cellCleanup_characters;
     }
 
     partial class ThisRibbonCollection : Microsoft.Office.Tools.Ribbon.RibbonReadOnlyCollection

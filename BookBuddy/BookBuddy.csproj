@@ -26,16 +26,18 @@
     <RootNamespace>BookBuddy</RootNamespace>
     <AssemblyName>BookBuddy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ManifestCertificateThumbprint>0293944344F87B7E3C6D04FB705CCB16CCDF17FB</ManifestCertificateThumbprint>
-    <ManifestKeyFile>BookBuddy_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>3E7DB38C0C52683D10954BA938A2E460C7B13CEC</ManifestCertificateThumbprint>
+    <ManifestKeyFile>BookBuddy_1_TemporaryKey.pfx</ManifestKeyFile>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>False</IsWebBootstrapper>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>BookBuddy_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl>
     </InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.3</ApplicationVersion>
+    <ApplicationVersion>1.0.0.6</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -207,6 +209,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="BookBuddy_1_TemporaryKey.pfx" />
     <None Include="BookBuddy_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -24,6 +24,7 @@ namespace BookBuddy
         }
         private static List<Worksheet> undoList = new List<Worksheet>();
         private const int MAX_UNDO = 5;
+        private const string REGEX_ALPHA_NUMERIC = @"[A-Za-z0-9]+";
 
         private static void pushChange( )
         {
@@ -228,6 +229,104 @@ namespace BookBuddy
             popChange();
             Debug.WriteLine("Undo pressed");
 
+        }
+
+        private void btn_go_cellCleanup_Click(object sender, RibbonControlEventArgs e)
+        {
+            Worksheet sheet = Globals.ThisAddIn.GetActiveWorkSheet();     // Get the worksheet
+            int column = ColumnNameToIndex(ed_cellCleanup_column.Text);    // Get the source column
+            if (column < 0)
+            {
+                MessageBox.Show("Invalid column \"" + ed_cellCleanup_column.Text + "\"!", "Error");
+                return;
+            }
+            removeCharacters(sheet, column);
+            //makeCellsAlphaNumeric();
+        }
+
+        private void NotifyChangesToColumn(string column, int numChanges)
+        {
+            MessageBox.Show(
+                numChanges.ToString() + " cells in column " + column + " were modified.",
+                "Notice"
+                );
+        }
+
+        /* getRegexMatchSingle()
+         * 
+         * Returns a concatenated string of all Regex matches
+         * 
+         */
+        private string getRegexMatchSingle(string input, string pattern, RegexOptions options)
+        {
+            string matches = "";
+            foreach (Match m in Regex.Matches(input, pattern, options))
+            {
+                matches += m.Value.ToString();
+            }
+            return matches;
+        }
+
+        private void removeCharacters(Worksheet sheet, int column)
+        {      
+            int numChanges = 0;
+
+            int numRows = sheet.UsedRange.Rows.Count;
+
+            string exclusiveRegex = getExclusiveRegex(ed_cellCleanup_characters.Text);
+
+            for (int row = 1; row <= numRows; row++)
+            {
+                Excel.Range cell = (Excel.Range)sheet.Cells[row, column];
+                try
+                {
+                    string cellText = cell.Value2.ToString();
+                    string newCellText = getRegexMatchSingle(cellText, exclusiveRegex, RegexOptions.Multiline);
+                    cell.Value2 = newCellText;
+                    numChanges++;
+                }
+                catch (Exception ex) { /* The cellText was null */ }
+            }
+            NotifyChangesToColumn(ed_cellCleanup_column.Text, numChanges);
+        }
+
+        /* getExclusiveRegex()
+         * 
+         * Returns a regex that excludes the given string
+         * 
+         */
+        private string getExclusiveRegex(string userInput)
+        {
+            return @"[^" + userInput + "]+";
+        }
+
+
+
+        private void makeCellsAlphaNumeric()
+        {
+            Worksheet sheet = Globals.ThisAddIn.GetActiveWorkSheet();     // Get the worksheet
+            int column = ColumnNameToIndex(ed_cellCleanup_column.Text);    // Get the source column
+            if (column < 0)
+            {
+                MessageBox.Show("Invalid column \"" + ed_cellCleanup_column.Text + "\"!", "Error");
+                return;
+            }
+            int numChanges = 0;
+            int numRows = sheet.UsedRange.Rows.Count;
+            for (int row = 1; row <= numRows; row++)
+            {
+                Excel.Range cell = (Excel.Range)sheet.Cells[row, column];
+                try
+                {
+                    String cellText = cell.Value2.ToString();
+                    String alphaNumeric = getRegexMatchSingle(cellText, REGEX_ALPHA_NUMERIC, RegexOptions.Multiline);
+                    cell.Value2 = alphaNumeric;
+                    numChanges++;
+                    
+                }
+                catch (Exception ex) { /* The cellText was null */ }
+            }
+            NotifyChangesToColumn(ed_cellCleanup_column.Text, numChanges);
         }
     }
 }
