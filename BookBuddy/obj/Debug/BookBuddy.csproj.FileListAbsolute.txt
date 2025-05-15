@@ -29,5 +29,14 @@ Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Debug\BookBuddy.Ribbon1.resou
 Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Debug\BookBuddy.csproj.GenerateResource.Cache
 Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Debug\BookBuddy.dll
 Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Debug\BookBuddy.pdb
-Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\bin\Debug\BookBuddy.dll.manifest
-Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\bin\Debug\BookBuddy.vsto
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\bin\Debug\BookBuddy.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\bin\Debug\BookBuddy.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\bin\Debug\BookBuddy.dll.manifest
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\bin\Debug\BookBuddy.vsto
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.frm_patternmatch.resources
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.Properties.Resources.resources
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.Ribbon1.resources
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.csproj.GenerateResource.Cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.pdb

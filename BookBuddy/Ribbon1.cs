@@ -68,8 +68,46 @@ namespace BookBuddy
             }
             return number;
         }
+
+        private int getNumberOfNonNumericCells(Worksheet sheet, int colIndex)
+        {
+            int numRows = sheet.UsedRange.Rows.Count;
+            int numRowsThatCanChange = 0;
+            for (int i = 1; i <= numRows; i++)
+            {
+                Excel.Range cell = (Excel.Range)sheet.Cells[i, colIndex];
+                try
+                {
+                    String cellText = cell.Value2.ToString();
+                    decimal num;
+                    if (decimal.TryParse(cellText, out num))
+                    {
+                        numRowsThatCanChange += 1;
+                    }
+                }
+                catch (Exception ex) { /* The cellText was null */ }
+            }
+
+            // Normal case: this is zero
+            return numRows - numRowsThatCanChange;
+        }
+
         public void SignFlipColumn(Worksheet sheet, int colIndex)
         {
+            String option = cb_pickSign.Text;
+            if (!option.Contains('+') && !option.Contains('-'))
+            {
+                MessageBox.Show("Please use either + or - for the sign.", "Error");
+                return;
+            }
+
+            /* Mom doesn't like error messages, so leave this commented out.
+            int numCellsNonNumeric = getNumberOfNonNumericCells(sheet, colIndex);
+            if (numCellsNonNumeric != 0)
+            {
+                MessageBox.Show("Warning: This column contains " + numCellsNonNumeric + " non-numeric cells. These won't be modified.", "Warning");
+            }
+            */
             int numChanges = 0;
             int numRows = sheet.UsedRange.Rows.Count;
             for (int i = 1; i <= numRows; i++)
@@ -78,10 +116,9 @@ namespace BookBuddy
                 try
                 {
                     String cellText = cell.Value2.ToString();
-                    float num;
-                    if (float.TryParse(cellText, out num))
+                    decimal num;
+                    if (decimal.TryParse(cellText, out num))
                     {
-                        String option = cb_pickSign.Text;
                         if (option.Contains('+'))
                         {
                             cell.Value2 = Math.Abs(num);    // Make positive
@@ -92,11 +129,7 @@ namespace BookBuddy
                             cell.Value2 = Math.Abs(num) * -1;  // make negative
                             numChanges += 1;
                         }
-                        else
-                        {
-                            MessageBox.Show("Unrecognized option \"" + option + "\" for sign","Error");
-                            return;
-                        }
+                        cell.NumberFormat = "0.00"; // Always two decimal places
                     }
                 }
                 catch (Exception ex) { /* The cellText was null */ }
@@ -282,6 +315,7 @@ namespace BookBuddy
                 {
                     string cellText = cell.Value2.ToString();
                     string newCellText = getRegexMatchSingle(cellText, exclusiveRegex, RegexOptions.Multiline);
+                    cell.NumberFormat = "@";
                     cell.Value2 = newCellText;
                     numChanges++;
                 }

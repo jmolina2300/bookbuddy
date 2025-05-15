@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
-            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem3 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
-            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem4 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
+            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem1 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
+            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem2 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
             this.tab1 = new Microsoft.Office.Tools.Ribbon.RibbonTab();
             this.group1 = new Microsoft.Office.Tools.Ribbon.RibbonGroup();
             this.box4 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
@@ -210,10 +210,10 @@
             // 
             // cb_pickSign
             // 
-            ribbonDropDownItem3.Label = "+ Positive";
-            ribbonDropDownItem4.Label = "- Negative";
-            this.cb_pickSign.Items.Add(ribbonDropDownItem3);
-            this.cb_pickSign.Items.Add(ribbonDropDownItem4);
+            ribbonDropDownItem1.Label = "+ Positive";
+            ribbonDropDownItem2.Label = "- Negative";
+            this.cb_pickSign.Items.Add(ribbonDropDownItem1);
+            this.cb_pickSign.Items.Add(ribbonDropDownItem2);
             this.cb_pickSign.Label = "Sign";
             this.cb_pickSign.Name = "cb_pickSign";
             this.cb_pickSign.SizeString = "all positive";

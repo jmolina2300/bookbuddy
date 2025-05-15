@@ -20,3 +20,14 @@ C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\Bo
 C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddyV2\BookBuddy\obj\Release\BookBuddy.csproj.GenerateResource.Cache
 C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddyV2\BookBuddy\obj\Release\BookBuddy.dll
 C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddyV2\BookBuddy\obj\Release\BookBuddy.pdb
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\bin\Release\BookBuddy.dll
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\bin\Release\BookBuddy.pdb
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\ResolveAssemblyReference.cache
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\BookBuddy.frm_patternmatch.resources
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\BookBuddy.Properties.Resources.resources
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\BookBuddy.Ribbon1.resources
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\BookBuddy.csproj.GenerateResource.Cache
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\BookBuddy.dll
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\BookBuddy.pdb
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\bin\Release\BookBuddy.dll.manifest
+Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\bin\Release\BookBuddy.vsto
