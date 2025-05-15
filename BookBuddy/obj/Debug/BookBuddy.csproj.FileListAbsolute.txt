@@ -1,0 +1,11 @@
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\bin\Debug\BookBuddy.dll
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\bin\Debug\BookBuddy.pdb
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\bin\Debug\BookBuddy.dll.manifest
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\bin\Debug\BookBuddy.vsto
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\obj\Debug\BookBuddy.Properties.Resources.resources
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\obj\Debug\BookBuddy.csproj.GenerateResource.Cache
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\obj\Debug\BookBuddy.dll
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\obj\Debug\BookBuddy.pdb
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\obj\Debug\BookBuddy.Ribbon1.resources
+C:\Documents and Settings\Jan Molina\My Documents\Visual Studio 2008\Projects\BookBuddy\BookBuddy\obj\Debug\BookBuddy.frm_patternmatch.resources

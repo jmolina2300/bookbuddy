@@ -1,0 +1,233 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.Office.Tools.Ribbon;
+using Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
+
+namespace BookBuddy
+{
+    public partial class Ribbon1 : OfficeRibbon
+    {
+        public Ribbon1()
+        {
+            InitializeComponent();
+        }
+
+        private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
+        {
+
+        }
+        private static List<Worksheet> undoList = new List<Worksheet>();
+        private const int MAX_UNDO = 5;
+
+        private static void pushChange( )
+        {
+            Worksheet activeSheet = Globals.ThisAddIn.GetActiveWorkSheet();
+            if (undoList.Count < MAX_UNDO)
+            {
+                Worksheet newSheet = ObjectCopier.Clone(activeSheet);  // Copy current sheet
+                undoList.Add(newSheet);             // Add it to the undo list
+            }
+            else
+            {
+                undoList.RemoveAt(0);               // Remove oldest
+                Worksheet newSheet = ObjectCopier.Clone(activeSheet); // Copy current sheet
+                undoList.Add(newSheet);             // Add it to the undo list
+            }
+        }
+        private static void popChange( )
+        {
+            if (undoList.Count < 1)
+            {
+                return;
+            }
+            Worksheet lastSheet = undoList.Last();
+            undoList.RemoveAt(undoList.Count-1);
+            Globals.ThisAddIn.SetActiveWorkSheet(lastSheet);
+        }
+
+        public static int ColumnNameToIndex(string name)
+        {
+            var upperCaseName = name.ToUpper();
+            var number = 0;
+            var pow = 1;
+            if (!Regex.IsMatch(name, @"^[a-zA-Z]+$")) 
+            {
+                return -1; //Check if input was not a letter
+            }
+            for (var i = upperCaseName.Length - 1; i >= 0; i--)
+            {
+                number += (upperCaseName[i] - 'A' + 1) * pow;
+                pow *= 26;
+            }
+            return number;
+        }
+        public void SignFlipColumn(Worksheet sheet, int colIndex)
+        {
+            int numChanges = 0;
+            int numRows = sheet.UsedRange.Rows.Count;
+            for (int i = 1; i <= numRows; i++)
+            {
+                Excel.Range cell = (Excel.Range)sheet.Cells[i, colIndex];
+                try
+                {
+                    String cellText = cell.Value2.ToString();
+                    float num;
+                    if (float.TryParse(cellText, out num))
+                    {
+                        String option = cb_pickSign.Text;
+                        if (option.Contains('+'))
+                        {
+                            cell.Value2 = Math.Abs(num);    // Make positive
+                            numChanges += 1;
+                        }
+                        else if (option.Contains('-'))
+                        {
+                            cell.Value2 = Math.Abs(num) * -1;  // make negative
+                            numChanges += 1;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Unrecognized option \"" + option + "\" for sign","Error");
+                            return;
+                        }
+                    }
+                }
+                catch (Exception ex) { /* The cellText was null */ }
+            }
+
+            MessageBox.Show(
+                numChanges.ToString() + " cells in column " + ed_signFlip_colBox.Text.ToUpper() + " were modified.",
+                "Notice"
+                );
+        }
+        private void btn_go_Click(object sender, RibbonControlEventArgs e)
+        {
+            Worksheet sheet = Globals.ThisAddIn.GetActiveWorkSheet();  // Get the worksheet
+            int numChanges = 0;
+            int colSrc = ColumnNameToIndex(ed_colBox1.Text);    // Get the source column
+            int colDest = ColumnNameToIndex(ed_colBox2.Text);   // Get the destination column
+            int numRows = sheet.UsedRange.Rows.Count;
+
+            String sourceText = ed_textBox1.Text;    // Get the source text
+            String outputText = ed_textBox2.Text;    // Get the output (desired) text
+
+            if (numRows < 1)
+            {
+                return;  // Return if there are no rows being used
+            }
+            if (colSrc < 0)
+            {
+                MessageBox.Show("Invalid source column \"" + ed_colBox1.Text+"\"!", "Warning");
+                return;
+            }
+            if (colDest < 0)
+            {
+                MessageBox.Show("Invalid destination column \"" + ed_colBox2.Text+"\"!", "Warning");
+                return;
+            }
+            if (sourceText.Length < 1 || outputText.Length < 1)
+            {
+                MessageBox.Show("Please fill out all text fields!", "Warning");
+                return;
+            }
+            if (colDest == colSrc)
+            {
+                // Check if source column and dest column are the same 
+                DialogResult d1 = MessageBox.Show(
+                    "Your source column will be overwritten!\n\nDo you want to continue?",
+                    "Confirm Action",
+                    MessageBoxButtons.YesNo
+                );
+                if (d1 == DialogResult.No)
+                {
+                    return;
+                }
+            }
+            String cellText = "";
+
+            // Count the number of cels that will be changed
+            for (int i = 1; i <= numRows; i++)
+            {
+                Excel.Range cellSource = (Excel.Range)sheet.Cells[i, colSrc];
+                Excel.Range cellDest = (Excel.Range)sheet.Cells[i, colDest];
+                try
+                {
+                    cellText = cellSource.Value2.ToString();
+                    if (cellText.Contains(sourceText))
+                    {
+                        numChanges += 1;
+                    }
+                }
+                catch (Exception ex) { /* The cellText was null */ }
+            }
+            if (numChanges == 0) 
+            {
+                // No strings matched the keyword we were looking for
+                MessageBox.Show("No matches found for keyword \"" + sourceText + "\" in column " + ed_colBox1.Text.ToUpper(), "Notice");
+                return;
+            }
+            DialogResult d2 = MessageBox.Show(
+                numChanges.ToString() + " cells in column " + ed_colBox2.Text + " will be modified.\n\nDo you want to continue?",
+                "Confirm Action",
+                MessageBoxButtons.YesNo
+                );
+            if (d2 == DialogResult.No)
+            {
+                return;
+            }
+            numChanges = 0;
+            // Check the Source column for the string pattern
+            for (int i = 1; i <= numRows; i++)
+            {
+                Excel.Range cellSource = (Excel.Range)sheet.Cells[i, colSrc];
+                Excel.Range cellDest = (Excel.Range)sheet.Cells[i, colDest];
+
+                //**
+                // BUGBUG: if the row contains ONLY a number, we get an error
+                //  We cant cast th cell contents to system string
+                //**
+                try
+                {
+                    cellText = cellSource.Value2.ToString();
+
+                    if (cellText.Contains(sourceText))
+                    {
+                        // If the cell at this row contains the PATTERN.
+                        // then set the destination cell contents
+                        cellDest.Value2 = outputText;
+                        numChanges += 1;
+                    }
+                }
+                catch (Exception ex) { /* The cellText was null */ }
+            }
+            //MessageBox.Show("Inserted " + numChanges.ToString() + " changes", "Notice");
+            //pushChange();
+        }
+
+        private void btn_go_signFlip_Click(object sender, RibbonControlEventArgs e)
+        {
+            Worksheet sheet = Globals.ThisAddIn.GetActiveWorkSheet();
+            int column = ColumnNameToIndex(ed_signFlip_colBox.Text);
+            if (column < 0)
+            {
+                MessageBox.Show("Invalid column \"" + ed_signFlip_colBox.Text+"\"!", "Error");
+                return;
+            }
+
+            SignFlipColumn(sheet, column);
+        }
+
+        private void btn_undo_Click(object sender, RibbonControlEventArgs e)
+        {
+            popChange();
+            Debug.WriteLine("Undo pressed");
+
+        }
+    }
+}
