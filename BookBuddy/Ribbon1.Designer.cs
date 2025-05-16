@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher ribbonDialogLauncher1 = new Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem1 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem2 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
@@ -87,6 +88,7 @@
             // 
             // group1
             // 
+            this.group1.DialogLauncher = ribbonDialogLauncher1;
             this.group1.Items.Add(this.box4);
             this.group1.Items.Add(this.box1);
             this.group1.Items.Add(this.separator1);
@@ -96,6 +98,7 @@
             this.group1.Items.Add(this.btn_go);
             this.group1.Label = "Description Auto Filler";
             this.group1.Name = "group1";
+            this.group1.DialogLauncherClick += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.group1_DialogLauncherClick);
             // 
             // box4
             // 

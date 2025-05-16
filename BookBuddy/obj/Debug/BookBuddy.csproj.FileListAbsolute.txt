@@ -40,3 +40,15 @@ C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects
 C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.csproj.GenerateResource.Cache
 C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.dll
 C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\BookBuddy Safe Location\BookBuddy\obj\Debug\BookBuddy.pdb
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\bin\Debug\BookBuddy.dll
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\bin\Debug\BookBuddy.pdb
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\bin\Debug\BookBuddy.dll.manifest
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\bin\Debug\BookBuddy.vsto
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\ResolveAssemblyReference.cache
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.Properties.Resources.resources
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.Ribbon1.resources
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.csproj.GenerateResource.Cache
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.dll
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.pdb
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.frmDescriptionReplace.resources
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.frmDescriptionMultiReplace.resources

@@ -12,9 +12,9 @@ using System.Text.RegularExpressions;
 
 namespace BookBuddy
 {
-    public partial class frm_patternmatch : Form
+    public partial class frmDescriptionMultiReplace : Form
     {
-        public frm_patternmatch()
+        public frmDescriptionMultiReplace()
         {
             InitializeComponent();
         }

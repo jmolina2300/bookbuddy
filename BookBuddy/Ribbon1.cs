@@ -362,5 +362,127 @@ namespace BookBuddy
             }
             NotifyChangesToColumn(ed_cellCleanup_column.Text, numChanges);
         }
+
+        private void group1_DialogLauncherClick(object sender, RibbonControlEventArgs e)
+        {
+            frmDescriptionReplace form = new frmDescriptionReplace();
+
+            // Show the form as a dialog (blocking)
+            DialogResult mainDialogResult = form.ShowDialog();
+            if (mainDialogResult != DialogResult.OK)
+            {
+                return;
+            }
+
+            // User clicked OK. Retrieve values from the form...
+            string sourceColumnText = form.SourceColumn;
+            string destinationColumnText = form.DestinationColumn;
+
+
+            /*
+            MessageBox.Show("Source Column: " + sourceColumnText + "\n" +
+                            "Source Content: " + sourceContent + "\n" +
+                            "Destination Column: " + destinationColumnText + "\n" +
+                            "Destination Content: " + replacementText);
+            */
+
+            Worksheet sheet = Globals.ThisAddIn.GetActiveWorkSheet();  // Get the worksheet
+            int colSrc = ColumnNameToIndex(sourceColumnText);         // Get the source column
+            int colDest = ColumnNameToIndex(destinationColumnText);   // Get the destination column
+            int numRows = sheet.UsedRange.Rows.Count;
+
+            if (numRows < 1)
+            {
+                return;  // Return if there are no rows being used
+            }
+            if (colSrc < 0)
+            {
+                MessageBox.Show("Invalid source column \"" + sourceColumnText + "\"!", "Warning");
+                return;
+            }
+            if (colDest < 0)
+            {
+                MessageBox.Show("Invalid destination column \"" + destinationColumnText + "\"!", "Warning");
+                return;
+            }
+
+            if (colDest == colSrc)
+            {
+                // Check if source column and dest column are the same 
+                DialogResult d1 = MessageBox.Show(
+                    "Your source column will be overwritten!\n\nDo you want to continue?",
+                    "Confirm Action",
+                    MessageBoxButtons.YesNo
+                );
+                if (d1 == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
+            // Everything is fine. Do the text replacement.
+            int numChanges = 0;
+            if (form.isMISO) 
+            {
+                string replacementText = form.DestinationContent;
+                string sourceContent = form.SourceContent;
+                if (sourceContent.Length < 1 || replacementText.Length < 1)
+                {
+                    MessageBox.Show("Please fill out all text fields!", "Warning");
+                    return;
+                }
+                numChanges = descriptionReplaceMISO(colSrc, sourceContent, colDest, replacementText, sheet);
+            }
+            else if (form.isMIMO)
+            {
+                numChanges = 0;//descriptionReplaceMIMO(colSrc, colDest, sheet);
+            }
+
+
+            // Tell the user how many cells were modified.
+            NotifyChangesToColumn(destinationColumnText, numChanges);
+        }
+
+        private int descriptionReplaceMISO(int colSrc, string sourceKeywords, int colDest, string replacementText, Worksheet sheet)
+        {
+            // Split the space-separated keywords into an array
+            string[] keywords = sourceKeywords.Split(' ');
+            int replacements = 0;
+
+            int numRows = sheet.UsedRange.Rows.Count;
+
+            // Loop through each row in the source column
+            for (int i = 1; i <= numRows; i++)
+            {
+                Range sourceCell = (Excel.Range)sheet.Cells[i, colSrc];
+
+                // Skip empty cells or we'll get a null reference 
+                if (sourceCell.Value2 == null)
+                {
+                    continue;
+                }
+                string cellValue = sourceCell.Value2.ToString() ?? "";
+
+                // Check if any keyword is present in the cell value
+                foreach (string keyword in keywords)
+                {
+                    if (!string.IsNullOrEmpty(keyword) && cellValue.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        // Replace the value in the destination column
+                        Range destinationCell = (Range)sheet.Cells[i, colDest];
+                        destinationCell.Value2 = replacementText;
+
+                        // Increment the counter for replacements
+                        replacements++;
+                        break; // No need to check further keywords for this cell
+                    }
+                }
+            }
+
+            // Return the number of replacements made
+            return replacements;
+        }
+
+        
     }
 }
