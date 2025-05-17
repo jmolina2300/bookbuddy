@@ -1,6 +1,6 @@
 ﻿namespace BookBuddy
 {
-    partial class frmDescriptionReplace
+    partial class frmDescriptionAutofill
     {
         /// <summary>
         /// Required designer variable.
@@ -45,12 +45,14 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnOKMIMO = new System.Windows.Forms.Button();
             this.btnImportCSV = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Source = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnCancel2 = new System.Windows.Forms.Button();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -99,7 +101,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(471, 444);
+            this.btnOK.Location = new System.Drawing.Point(449, 297);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 5;
@@ -182,7 +184,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(552, 444);
+            this.btnCancel.Location = new System.Drawing.Point(530, 297);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 6;
@@ -205,16 +207,20 @@
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.btnCancel);
+            this.tabPage1.Controls.Add(this.btnOK);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(613, 326);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Multi-In, Single-Out";
+            this.tabPage1.Text = "Multi-In/Single-Out";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnCancel2);
+            this.tabPage2.Controls.Add(this.btnOKMIMO);
             this.tabPage2.Controls.Add(this.btnImportCSV);
             this.tabPage2.Controls.Add(this.dataGridView1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -222,8 +228,28 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(613, 326);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Multi-In, Multi-Out";
+            this.tabPage2.Text = "Multi-In/Multi-Out";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnOKMIMO
+            // 
+            this.btnOKMIMO.Location = new System.Drawing.Point(449, 297);
+            this.btnOKMIMO.Name = "btnOKMIMO";
+            this.btnOKMIMO.Size = new System.Drawing.Size(75, 23);
+            this.btnOKMIMO.TabIndex = 2;
+            this.btnOKMIMO.Text = "OK";
+            this.btnOKMIMO.UseVisualStyleBackColor = true;
+            this.btnOKMIMO.Click += new System.EventHandler(this.btnOKMIMO_Click);
+            // 
+            // btnImportCSV
+            // 
+            this.btnImportCSV.Location = new System.Drawing.Point(6, 298);
+            this.btnImportCSV.Name = "btnImportCSV";
+            this.btnImportCSV.Size = new System.Drawing.Size(96, 23);
+            this.btnImportCSV.TabIndex = 1;
+            this.btnImportCSV.Text = "Import CSV";
+            this.btnImportCSV.UseVisualStyleBackColor = true;
+            this.btnImportCSV.Click += new System.EventHandler(this.btnImportCSV_Click);
             // 
             // dataGridView1
             // 
@@ -235,26 +261,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(601, 286);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Source";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Destination";
-            this.Column2.Name = "Column2";
-            // 
-            // btnImportCSV
-            // 
-            this.btnImportCSV.Location = new System.Drawing.Point(6, 298);
-            this.btnImportCSV.Name = "btnImportCSV";
-            this.btnImportCSV.Size = new System.Drawing.Size(96, 23);
-            this.btnImportCSV.TabIndex = 1;
-            this.btnImportCSV.Text = "Import CSV";
-            this.btnImportCSV.UseVisualStyleBackColor = true;
-            this.btnImportCSV.Click += new System.EventHandler(this.btnImportCSV_Click);
             // 
             // Source
             // 
@@ -278,7 +284,27 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Destination";
             // 
-            // frmDescriptionReplace
+            // btnCancel2
+            // 
+            this.btnCancel2.Location = new System.Drawing.Point(530, 297);
+            this.btnCancel2.Name = "btnCancel2";
+            this.btnCancel2.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel2.TabIndex = 3;
+            this.btnCancel2.Text = "Cancel";
+            this.btnCancel2.UseVisualStyleBackColor = true;
+            this.btnCancel2.Click += new System.EventHandler(this.btnCancel2_Click);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Keyword";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Autofill Description";
+            this.Column2.Name = "Column2";
+            // 
+            // frmDescriptionAutofill
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -286,13 +312,11 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.Source);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
             this.MaximizeBox = false;
-            this.Name = "frmDescriptionReplace";
+            this.Name = "frmDescriptionAutofill";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Multiple Description Replace";
+            this.Text = "Multiple Description Autofill";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -330,10 +354,12 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.Button btnImportCSV;
         private System.Windows.Forms.GroupBox Source;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button btnOKMIMO;
+        private System.Windows.Forms.Button btnCancel2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }

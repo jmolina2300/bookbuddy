@@ -122,6 +122,7 @@
             this.ed_colBox1.Name = "ed_colBox1";
             this.ed_colBox1.SizeString = "aaa";
             this.ed_colBox1.Text = null;
+            this.ed_colBox1.TextChanged += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.ed_colBox1_TextChanged);
             // 
             // ed_textBox1
             // 
@@ -157,6 +158,7 @@
             this.ed_colBox2.Name = "ed_colBox2";
             this.ed_colBox2.SizeString = "aaa";
             this.ed_colBox2.Text = null;
+            this.ed_colBox2.TextChanged += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.ed_colBox2_TextChanged);
             // 
             // ed_textBox2
             // 

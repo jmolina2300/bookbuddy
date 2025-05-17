@@ -151,41 +151,14 @@ namespace BookBuddy
             String sourceText = ed_textBox1.Text;    // Get the source text
             String outputText = ed_textBox2.Text;    // Get the output (desired) text
 
-            if (numRows < 1)
+            // Make sure the rows and columns are OK
+            if (!RowsAndColumnsAreOK(ed_colBox1.Text, ed_colBox2.Text, sheet))
             {
-                return;  // Return if there are no rows being used
-            }
-            if (colSrc < 0)
-            {
-                MessageBox.Show("Invalid source column \"" + ed_colBox1.Text+"\"!", "Warning");
                 return;
-            }
-            if (colDest < 0)
-            {
-                MessageBox.Show("Invalid destination column \"" + ed_colBox2.Text+"\"!", "Warning");
-                return;
-            }
-            if (sourceText.Length < 1 || outputText.Length < 1)
-            {
-                MessageBox.Show("Please fill out all text fields!", "Warning");
-                return;
-            }
-            if (colDest == colSrc)
-            {
-                // Check if source column and dest column are the same 
-                DialogResult d1 = MessageBox.Show(
-                    "Your source column will be overwritten!\n\nDo you want to continue?",
-                    "Confirm Action",
-                    MessageBoxButtons.YesNo
-                );
-                if (d1 == DialogResult.No)
-                {
-                    return;
-                }
-            }
-            String cellText = "";
+            }       
 
-            // Count the number of cels that will be changed
+            // Count the number of cells that will be changed
+            String cellText = "";
             for (int i = 1; i <= numRows; i++)
             {
                 Excel.Range cellSource = (Excel.Range)sheet.Cells[i, colSrc];
@@ -203,7 +176,7 @@ namespace BookBuddy
             if (numChanges == 0) 
             {
                 // No strings matched the keyword we were looking for
-                MessageBox.Show("No matches found for keyword \"" + sourceText + "\" in column " + ed_colBox1.Text.ToUpper(), "Notice");
+                MessageBox.Show("No matches found for keyword \"" + sourceText + "\" in column " + ed_colBox1.Text, "Notice");
                 return;
             }
             DialogResult d2 = MessageBox.Show(
@@ -274,7 +247,6 @@ namespace BookBuddy
                 return;
             }
             removeCharacters(sheet, column);
-            //makeCellsAlphaNumeric();
         }
 
         private void NotifyChangesToColumn(string column, int numChanges)
@@ -363,47 +335,25 @@ namespace BookBuddy
             NotifyChangesToColumn(ed_cellCleanup_column.Text, numChanges);
         }
 
-        private void group1_DialogLauncherClick(object sender, RibbonControlEventArgs e)
+        private bool RowsAndColumnsAreOK(string sourceColumnText, string destinationColumnText, Worksheet sheet)
         {
-            frmDescriptionReplace form = new frmDescriptionReplace();
-
-            // Show the form as a dialog (blocking)
-            DialogResult mainDialogResult = form.ShowDialog();
-            if (mainDialogResult != DialogResult.OK)
-            {
-                return;
-            }
-
-            // User clicked OK. Retrieve values from the form...
-            string sourceColumnText = form.SourceColumn;
-            string destinationColumnText = form.DestinationColumn;
-
-
-            /*
-            MessageBox.Show("Source Column: " + sourceColumnText + "\n" +
-                            "Source Content: " + sourceContent + "\n" +
-                            "Destination Column: " + destinationColumnText + "\n" +
-                            "Destination Content: " + replacementText);
-            */
-
-            Worksheet sheet = Globals.ThisAddIn.GetActiveWorkSheet();  // Get the worksheet
-            int colSrc = ColumnNameToIndex(sourceColumnText);         // Get the source column
-            int colDest = ColumnNameToIndex(destinationColumnText);   // Get the destination column
+            int colSrc = ColumnNameToIndex(sourceColumnText);          // Get the source column
+            int colDest = ColumnNameToIndex(destinationColumnText);    // Get the destination column
             int numRows = sheet.UsedRange.Rows.Count;
 
             if (numRows < 1)
             {
-                return;  // Return if there are no rows being used
+                return false;  // Return if there are no rows being used
             }
             if (colSrc < 0)
             {
                 MessageBox.Show("Invalid source column \"" + sourceColumnText + "\"!", "Warning");
-                return;
+                return false;
             }
             if (colDest < 0)
             {
                 MessageBox.Show("Invalid destination column \"" + destinationColumnText + "\"!", "Warning");
-                return;
+                return false;
             }
 
             if (colDest == colSrc)
@@ -416,34 +366,75 @@ namespace BookBuddy
                 );
                 if (d1 == DialogResult.No)
                 {
-                    return;
+                    return false;
                 }
             }
 
-            // Everything is fine. Do the text replacement.
-            int numChanges = 0;
-            if (form.isMISO) 
+            return true;
+        }
+
+        private void group1_DialogLauncherClick(object sender, RibbonControlEventArgs e)
+        {
+            frmDescriptionAutofill dlg = new frmDescriptionAutofill();
+
+            // Show the form as a dialog (blocking)
+            DialogResult mainDialogResult = dlg.ShowDialog();
+            if (mainDialogResult != DialogResult.OK)
             {
-                string replacementText = form.DestinationContent;
-                string sourceContent = form.SourceContent;
-                if (sourceContent.Length < 1 || replacementText.Length < 1)
+                return;
+            }
+
+            // User clicked OK. Retrieve values from the form...
+            string sourceColumnText = dlg.SourceColumn;
+            string destinationColumnText = dlg.DestinationColumn;
+            Worksheet sheet = Globals.ThisAddIn.GetActiveWorkSheet();  // Get the worksheet
+
+            // Make sure the rows and columns are OK
+            if (!RowsAndColumnsAreOK(sourceColumnText, destinationColumnText, sheet))
+            {
+                return;
+            }
+
+            // Everything is fine. Do the text replacement.
+            int colSrc = ColumnNameToIndex(sourceColumnText);          // Get the source column
+            int colDest = ColumnNameToIndex(destinationColumnText);    // Get the destination column
+            int numRows = sheet.UsedRange.Rows.Count;
+            int numChanges = 0;
+
+            // Are we doing Multi-in/Single-Out, or Multi-in/Multi-out
+            if (dlg.IsMISO) 
+            {
+                string description = dlg.Description;
+                string keywords = dlg.Keywords;
+                if (keywords.Length < 1 || description.Length < 1)
                 {
                     MessageBox.Show("Please fill out all text fields!", "Warning");
                     return;
                 }
-                numChanges = descriptionReplaceMISO(colSrc, sourceContent, colDest, replacementText, sheet);
+                numChanges = descriptionAutofillMISO(colSrc, keywords, colDest, description, sheet);
             }
-            else if (form.isMIMO)
+            else if (dlg.IsMIMO)
             {
-                numChanges = 0;//descriptionReplaceMIMO(colSrc, colDest, sheet);
-            }
+                List<string> keywords = dlg.KeywordList;
+                List<string> descriptions = dlg.DescriptionList;
 
+                numChanges = descriptionAutofillMIMO(colSrc, colDest, keywords, descriptions);
+            }
 
             // Tell the user how many cells were modified.
             NotifyChangesToColumn(destinationColumnText, numChanges);
         }
 
-        private int descriptionReplaceMISO(int colSrc, string sourceKeywords, int colDest, string replacementText, Worksheet sheet)
+        /* descriptionAutofillMISO
+         * 
+         * 
+         * Fills ONE description for multiple keywords 
+         * 
+         *   keyword1 ---+-> description1
+         *   keyword2 --+
+         *   keyword3 -+ 
+         */
+        private int descriptionAutofillMISO(int colSrc, string sourceKeywords, int colDest, string replacementText, Worksheet sheet)
         {
             // Split the space-separated keywords into an array
             string[] keywords = sourceKeywords.Split(' ');
@@ -481,6 +472,60 @@ namespace BookBuddy
 
             // Return the number of replacements made
             return replacements;
+        }
+
+
+        /* descriptionAutofillMIMO
+         * 
+         * 
+         * Fills Multiple descriptions for multiple keywords 
+         * 
+         *   keyword1 -> description1
+         *   keyword2 -> description2
+         *   keyword3 -> description3
+         * 
+         */
+        private int descriptionAutofillMIMO(int colSrc, int colDest, List<string> sourceTexts, List<string> replacements)
+        {
+            Microsoft.Office.Interop.Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Worksheet activeSheet = (Worksheet)excelApp.ActiveSheet;
+
+            Range usedRange = activeSheet.UsedRange;
+
+            // Loop through each row in the used range
+            int numChanges = 0;
+            for (int row = 1; row <= usedRange.Rows.Count; row++)
+            {
+                Range cellA = (Range)usedRange.Cells[row, colSrc];
+                Range cellB = (Range)usedRange.Cells[row, colDest];
+
+                if (cellA.Value2 != null)
+                {
+                    string cellValue = cellA.Value2.ToString();
+
+                    // Search through the SourceTexts for a match
+                    for (int i = 0; i < sourceTexts.Count; i++)
+                    {
+                        if (cellValue.Contains(sourceTexts[i]))
+                        {
+                            cellB.Value2 = replacements[i]; // Place the replacement in Column B
+                            numChanges++;
+                            break;                          // Stop searching after the first match
+                        }
+                    }
+                }
+            }
+            return numChanges;
+        }
+
+        private void ed_colBox1_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            ed_colBox1.Text = ed_colBox1.Text.ToUpper();
+        }
+
+        private void ed_colBox2_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            ed_colBox2.Text = ed_colBox2.Text.ToUpper();
         }
 
         

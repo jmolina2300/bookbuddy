@@ -51,4 +51,3 @@ Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.csproj.Generate
 Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.dll
 Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.pdb
 Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.frmDescriptionReplace.resources
-Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Debug\BookBuddy.frmDescriptionMultiReplace.resources

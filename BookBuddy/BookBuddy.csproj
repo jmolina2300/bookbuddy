@@ -37,7 +37,7 @@
     <InstallUrl>
     </InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.9</ApplicationVersion>
+    <ApplicationVersion>1.0.1.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -182,28 +182,18 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="frmDescriptionReplace.cs">
+    <Compile Include="frmDescriptionAutofill.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmDescriptionReplace.Designer.cs">
-      <DependentUpon>frmDescriptionReplace.cs</DependentUpon>
+    <Compile Include="frmDescriptionAutofill.Designer.cs">
+      <DependentUpon>frmDescriptionAutofill.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectCopier.cs" />
-    <Compile Include="frmDescriptionMultiReplace.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmDescriptionMultiReplace.Designer.cs">
-      <DependentUpon>frmDescriptionMultiReplace.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="frmDescriptionReplace.resx">
-      <DependentUpon>frmDescriptionReplace.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmDescriptionMultiReplace.resx">
-      <DependentUpon>frmDescriptionMultiReplace.cs</DependentUpon>
+    <EmbeddedResource Include="frmDescriptionAutofill.resx">
+      <DependentUpon>frmDescriptionAutofill.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

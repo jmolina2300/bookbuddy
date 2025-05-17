@@ -31,3 +31,14 @@ Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\BookBuddy.dll
 Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\obj\Release\BookBuddy.pdb
 Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\bin\Release\BookBuddy.dll.manifest
 Z:\vm-sharedfiles\vs2008\BookBuddyV3\BookBuddy\bin\Release\BookBuddy.vsto
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\bin\Release\BookBuddy.dll
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\bin\Release\BookBuddy.pdb
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\bin\Release\BookBuddy.dll.manifest
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\bin\Release\BookBuddy.vsto
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Release\ResolveAssemblyReference.cache
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Release\BookBuddy.Properties.Resources.resources
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Release\BookBuddy.Ribbon1.resources
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Release\BookBuddy.csproj.GenerateResource.Cache
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Release\BookBuddy.dll
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Release\BookBuddy.pdb
+Z:\vm-sharedfiles\vs2008\bookbuddy\BookBuddy\obj\Release\BookBuddy.frmDescriptionAutofill.resources
