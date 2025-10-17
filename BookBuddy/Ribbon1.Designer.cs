@@ -96,7 +96,7 @@
             this.group1.Items.Add(this.box2);
             this.group1.Items.Add(this.separator2);
             this.group1.Items.Add(this.btn_go);
-            this.group1.Label = "Description Auto Filler";
+            this.group1.Label = "Transaction Description Auto Filler";
             this.group1.Name = "group1";
             this.group1.DialogLauncherClick += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.group1_DialogLauncherClick);
             // 
