@@ -25,6 +25,9 @@ namespace BookBuddy
         public List<string> KeywordList { get; private set; }
         public List<string> DescriptionList { get; private set; }
 
+        private Color ColorERR = Color.FromArgb(255, 255, 120, 15);
+        private Color ColorOK = Color.FromArgb(255, 255, 255, 255);
+
         private void ExtractDataFromGrid()
         {
             KeywordList = new List<string>();
@@ -164,33 +167,25 @@ namespace BookBuddy
             }
         }
 
-
-        /*
-         * btnOK_Click
-         * 
-         * Do the tasks for MISO OK button.
-         * 
-         */
-        private void btnOK_Click(object sender, EventArgs e)
+        private void colorColumnBoxesBasedOnContent()
         {
-            // Make sure both column fields are filled out
-            if (!BothColumnsFilled())
+            if (string.IsNullOrEmpty(txtSourceColumn.Text))
             {
-                MessageBox.Show("Please fill out both column fields", "Warning");
-                return;
+                txtSourceColumn.BackColor = ColorERR;
+            }
+            else
+            {
+                txtSourceColumn.BackColor = ColorOK;
             }
 
-            // Capture values before closing
-            SourceColumn = txtSourceColumn.Text;
-            Keywords = txtSourceContent.Text;
-            DestinationColumn = txtDestinationColumn.Text;
-            Description = txtDestinationContent.Text;
-
-            // Close the form with OK result
-            this.DialogResult = DialogResult.OK;
-            this.IsMISO = true;
-            this.IsMIMO = !IsMISO;
-            this.Close();
+            if (string.IsNullOrEmpty(txtDestinationColumn.Text))
+            {
+                txtDestinationColumn.BackColor = ColorERR;
+            }
+            else
+            {
+                txtDestinationColumn.BackColor = ColorOK;
+            }
         }
 
         /*
@@ -201,10 +196,13 @@ namespace BookBuddy
          */
         private void btnOKMIMO_Click(object sender, EventArgs e)
         {
+            // Color the text boxes based on whether they have text in them
+            this.colorColumnBoxesBasedOnContent();
+
             // Make sure both column fields are filled out
             if (!BothColumnsFilled())
             {
-                MessageBox.Show("Please fill out both column fields", "Warning");
+                MessageBox.Show("Please choose both a source and destination column", "Warning");
                 return;
             }
 
@@ -218,6 +216,16 @@ namespace BookBuddy
             this.IsMIMO = true;
             this.IsMISO = !IsMIMO;
             this.Close();
+        }
+
+        private void txtSourceColumn_TextChanged(object sender, EventArgs e)
+        {
+            txtSourceColumn.BackColor = ColorOK;
+        }
+
+        private void txtDestinationColumn_TextChanged(object sender, EventArgs e)
+        {
+            txtDestinationColumn.BackColor = ColorOK;
         }
 
 
