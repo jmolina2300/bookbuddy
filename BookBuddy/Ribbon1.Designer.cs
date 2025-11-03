@@ -28,24 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher ribbonDialogLauncher1 = new Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem1 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItem2 = new Microsoft.Office.Tools.Ribbon.RibbonDropDownItem();
             this.tab1 = new Microsoft.Office.Tools.Ribbon.RibbonTab();
             this.group1 = new Microsoft.Office.Tools.Ribbon.RibbonGroup();
-            this.box4 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
-            this.label1 = new Microsoft.Office.Tools.Ribbon.RibbonLabel();
-            this.box1 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
-            this.ed_colBox1 = new Microsoft.Office.Tools.Ribbon.RibbonEditBox();
-            this.ed_textBox1 = new Microsoft.Office.Tools.Ribbon.RibbonEditBox();
-            this.separator1 = new Microsoft.Office.Tools.Ribbon.RibbonSeparator();
-            this.box3 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
-            this.label2 = new Microsoft.Office.Tools.Ribbon.RibbonLabel();
-            this.box2 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
-            this.ed_colBox2 = new Microsoft.Office.Tools.Ribbon.RibbonEditBox();
-            this.ed_textBox2 = new Microsoft.Office.Tools.Ribbon.RibbonEditBox();
-            this.separator2 = new Microsoft.Office.Tools.Ribbon.RibbonSeparator();
             this.btn_go = new Microsoft.Office.Tools.Ribbon.RibbonButton();
             this.group2 = new Microsoft.Office.Tools.Ribbon.RibbonGroup();
             this.box5 = new Microsoft.Office.Tools.Ribbon.RibbonBox();
@@ -65,10 +52,6 @@
             this.btn_go_cellCleanup = new Microsoft.Office.Tools.Ribbon.RibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
-            this.box4.SuspendLayout();
-            this.box1.SuspendLayout();
-            this.box3.SuspendLayout();
-            this.box2.SuspendLayout();
             this.group2.SuspendLayout();
             this.box5.SuspendLayout();
             this.box6.SuspendLayout();
@@ -88,94 +71,16 @@
             // 
             // group1
             // 
-            this.group1.DialogLauncher = ribbonDialogLauncher1;
-            this.group1.Items.Add(this.box4);
-            this.group1.Items.Add(this.box1);
-            this.group1.Items.Add(this.separator1);
-            this.group1.Items.Add(this.box3);
-            this.group1.Items.Add(this.box2);
-            this.group1.Items.Add(this.separator2);
             this.group1.Items.Add(this.btn_go);
-            this.group1.Label = "Transaction Description Auto Filler";
+            this.group1.Label = "Transaction Description Utilities";
             this.group1.Name = "group1";
             this.group1.DialogLauncherClick += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.group1_DialogLauncherClick);
-            // 
-            // box4
-            // 
-            this.box4.Items.Add(this.label1);
-            this.box4.Name = "box4";
-            // 
-            // label1
-            // 
-            this.label1.Label = "Source";
-            this.label1.Name = "label1";
-            // 
-            // box1
-            // 
-            this.box1.Items.Add(this.ed_colBox1);
-            this.box1.Items.Add(this.ed_textBox1);
-            this.box1.Name = "box1";
-            // 
-            // ed_colBox1
-            // 
-            this.ed_colBox1.Label = "Column";
-            this.ed_colBox1.Name = "ed_colBox1";
-            this.ed_colBox1.SizeString = "aaa";
-            this.ed_colBox1.Text = null;
-            this.ed_colBox1.TextChanged += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.ed_colBox1_TextChanged);
-            // 
-            // ed_textBox1
-            // 
-            this.ed_textBox1.Label = "Keyword";
-            this.ed_textBox1.MaxLength = 128;
-            this.ed_textBox1.Name = "ed_textBox1";
-            this.ed_textBox1.SizeString = "randomasstext";
-            this.ed_textBox1.Text = null;
-            // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
-            // 
-            // box3
-            // 
-            this.box3.Items.Add(this.label2);
-            this.box3.Name = "box3";
-            // 
-            // label2
-            // 
-            this.label2.Label = "Destination";
-            this.label2.Name = "label2";
-            // 
-            // box2
-            // 
-            this.box2.Items.Add(this.ed_colBox2);
-            this.box2.Items.Add(this.ed_textBox2);
-            this.box2.Name = "box2";
-            // 
-            // ed_colBox2
-            // 
-            this.ed_colBox2.Label = "Column";
-            this.ed_colBox2.Name = "ed_colBox2";
-            this.ed_colBox2.SizeString = "aaa";
-            this.ed_colBox2.Text = null;
-            this.ed_colBox2.TextChanged += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.ed_colBox2_TextChanged);
-            // 
-            // ed_textBox2
-            // 
-            this.ed_textBox2.Label = "Text";
-            this.ed_textBox2.Name = "ed_textBox2";
-            this.ed_textBox2.SizeString = "randomasstext";
-            this.ed_textBox2.Text = null;
-            // 
-            // separator2
-            // 
-            this.separator2.Name = "separator2";
             // 
             // btn_go
             // 
             this.btn_go.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btn_go.Image = ((System.Drawing.Image)(resources.GetObject("btn_go.Image")));
-            this.btn_go.Label = "Apply Autofill";
+            this.btn_go.Label = "Launch Autofiller Dialog";
             this.btn_go.Name = "btn_go";
             this.btn_go.ScreenTip = "WARNING: Action cannot be undone!";
             this.btn_go.ShowImage = true;
@@ -300,14 +205,6 @@
             this.tab1.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
-            this.box4.ResumeLayout(false);
-            this.box4.PerformLayout();
-            this.box1.ResumeLayout(false);
-            this.box1.PerformLayout();
-            this.box3.ResumeLayout(false);
-            this.box3.PerformLayout();
-            this.box2.ResumeLayout(false);
-            this.box2.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
             this.box5.ResumeLayout(false);
@@ -328,19 +225,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ed_colBox1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ed_textBox1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ed_colBox2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box4;
-        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box3;
-        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ed_textBox2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btn_go;
-        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator2;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btn_go_signFlip;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box6;
