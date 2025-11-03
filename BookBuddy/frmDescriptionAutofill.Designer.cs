@@ -85,7 +85,7 @@
             // btnCancel2
             // 
             this.btnCancel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel2.Location = new System.Drawing.Point(656, 421);
+            this.btnCancel2.Location = new System.Drawing.Point(381, 411);
             this.btnCancel2.Name = "btnCancel2";
             this.btnCancel2.Size = new System.Drawing.Size(75, 23);
             this.btnCancel2.TabIndex = 3;
@@ -96,7 +96,7 @@
             // btnOKMIMO
             // 
             this.btnOKMIMO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOKMIMO.Location = new System.Drawing.Point(575, 421);
+            this.btnOKMIMO.Location = new System.Drawing.Point(300, 411);
             this.btnOKMIMO.Name = "btnOKMIMO";
             this.btnOKMIMO.Size = new System.Drawing.Size(75, 23);
             this.btnOKMIMO.TabIndex = 2;
@@ -107,7 +107,7 @@
             // btnImportCSV
             // 
             this.btnImportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnImportCSV.Location = new System.Drawing.Point(14, 421);
+            this.btnImportCSV.Location = new System.Drawing.Point(14, 411);
             this.btnImportCSV.Name = "btnImportCSV";
             this.btnImportCSV.Size = new System.Drawing.Size(96, 23);
             this.btnImportCSV.TabIndex = 1;
@@ -127,7 +127,7 @@
             this.Column2});
             this.dataGridView1.Location = new System.Drawing.Point(14, 116);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(717, 289);
+            this.dataGridView1.Size = new System.Drawing.Size(442, 279);
             this.dataGridView1.TabIndex = 0;
             // 
             // Column1
@@ -176,7 +176,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(747, 456);
+            this.ClientSize = new System.Drawing.Size(472, 446);
             this.Controls.Add(this.chkUseOldMatchingAlgorithm);
             this.Controls.Add(this.btnCancel2);
             this.Controls.Add(this.groupBox3);
@@ -185,7 +185,7 @@
             this.Controls.Add(this.btnImportCSV);
             this.Controls.Add(this.dataGridView1);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(630, 480);
+            this.MinimumSize = new System.Drawing.Size(480, 480);
             this.Name = "frmDescriptionAutofill";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
