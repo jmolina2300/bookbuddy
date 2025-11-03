@@ -22,6 +22,7 @@ namespace BookBuddy
         public string Description { get; private set; }
         public bool IsMISO { get; private set; }
         public bool IsMIMO { get; private set; }
+        public bool UseOldMatchingAlgorithm { get; private set; }
         public List<string> KeywordList { get; private set; }
         public List<string> DescriptionList { get; private set; }
 
@@ -211,6 +212,7 @@ namespace BookBuddy
             DestinationColumn = txtDestinationColumn.Text;
 
             // Close the form with OK result
+            this.UseOldMatchingAlgorithm = chkUseOldMatchingAlgorithm.Checked;
             this.DialogResult = DialogResult.OK;
             this.ExtractDataFromGrid();
             this.IsMIMO = true;

@@ -40,6 +40,7 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Source = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkUseOldMatchingAlgorithm = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.Source.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -161,11 +162,22 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Destination";
             // 
+            // chkUseOldMatchingAlgorithm
+            // 
+            this.chkUseOldMatchingAlgorithm.AutoSize = true;
+            this.chkUseOldMatchingAlgorithm.Location = new System.Drawing.Point(14, 93);
+            this.chkUseOldMatchingAlgorithm.Name = "chkUseOldMatchingAlgorithm";
+            this.chkUseOldMatchingAlgorithm.Size = new System.Drawing.Size(153, 17);
+            this.chkUseOldMatchingAlgorithm.TabIndex = 12;
+            this.chkUseOldMatchingAlgorithm.Text = "Use old matching algorithm";
+            this.chkUseOldMatchingAlgorithm.UseVisualStyleBackColor = true;
+            // 
             // frmDescriptionAutofill
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 456);
+            this.Controls.Add(this.chkUseOldMatchingAlgorithm);
             this.Controls.Add(this.btnCancel2);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnOKMIMO);
@@ -184,6 +196,7 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -201,5 +214,6 @@
         private System.Windows.Forms.Button btnCancel2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.CheckBox chkUseOldMatchingAlgorithm;
     }
 }
