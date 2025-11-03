@@ -418,7 +418,15 @@ namespace BookBuddy
                 List<string> keywords = dlg.KeywordList;
                 List<string> descriptions = dlg.DescriptionList;
 
-                numChanges = descriptionAutofillMIMO(colSrc, colDest, keywords, descriptions);
+                
+                if (dlg.UseOldMatchingAlgorithm)
+                {
+                    numChanges = descriptionAutofillMIMO_old(colSrc, colDest, keywords, descriptions);
+                }
+                else
+                {
+                    numChanges = descriptionAutofillMIMO(colSrc, colDest, keywords, descriptions);
+                }
             }
 
             // Tell the user how many cells were modified.
@@ -487,6 +495,68 @@ namespace BookBuddy
          */
         private int descriptionAutofillMIMO(int colSrc, int colDest, List<string> sourceTexts, List<string> replacements)
         {
+
+
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+
+            Excel.Range usedRange = activeSheet.UsedRange;
+
+            // Build a simple list of (source, replacement) pairs
+            System.Collections.ArrayList mapList = new System.Collections.ArrayList();
+
+            for (int i = 0; i < sourceTexts.Count; i++)
+            {
+                string src = (sourceTexts[i] ?? "").Trim();
+                if (src.Length == 0) continue;               // skip empty entries
+
+                string repl = (replacements[i] ?? "").Trim();
+
+                // store length + texts so we can sort later
+                mapList.Add(new object[] { src.Length, src, repl });
+            }
+
+
+            // Sort by length DESCENDING. Use custom comparer defined below.
+            mapList.Sort(new LengthComparer());
+
+ 
+            // Walk the sheet and apply the first (longest) match
+            int numChanges = 0;
+
+            for (int row = 1; row <= usedRange.Rows.Count; row++)
+            {
+                Excel.Range cellSrc = (Excel.Range)usedRange.Cells[row, colSrc];
+
+                Excel.Range cellDest = (Excel.Range)usedRange.Cells[row, colDest];
+
+                if (cellSrc.Value2 == null) continue;
+
+                string cellValue = cellSrc.Value2.ToString().Trim();
+
+                
+                
+                for (int m = 0; m < mapList.Count; m++)
+                {
+                    object[] entry = (object[])mapList[m];
+                    string mapSrc = (string)entry[1];
+
+                    // case-insensitive Contains check
+                    if (cellValue.IndexOf(mapSrc, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        cellDest.Value2 = (string)entry[2];
+                        numChanges++;
+                        break;              // stop after the first (longest) match
+                    }
+                }
+            }
+
+            return numChanges;
+        }
+
+
+        private int descriptionAutofillMIMO_old(int colSrc, int colDest, List<string> sourceTexts, List<string> replacements)
+        {
             Microsoft.Office.Interop.Excel.Application excelApp = Globals.ThisAddIn.Application;
             Worksheet activeSheet = (Worksheet)excelApp.ActiveSheet;
 
@@ -516,6 +586,27 @@ namespace BookBuddy
                 }
             }
             return numChanges;
+        }
+
+
+        /* class: LengthComparer
+         * 
+         * Simple comparer that sorts by the first element (the length) descending
+         * 
+         */
+        private class LengthComparer : System.Collections.IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                object[] a = (object[])x;
+                object[] b = (object[])y;
+
+                int lenA = (int)a[0];
+                int lenB = (int)b[0];
+
+                // longer first
+                return lenB.CompareTo(lenA);
+            }
         }
 
         private void ed_colBox1_TextChanged(object sender, RibbonControlEventArgs e)
