@@ -168,33 +168,20 @@ namespace BookBuddy
             int numRows = sheet.UsedRange.Rows.Count;
             int numChanges = 0;
 
-            // Are we doing Multi-in/Single-Out, or Multi-in/Multi-out
-            if (dlg.IsMISO)
-            {
-                string description = dlg.Description;
-                string keywords = dlg.Keywords;
-                if (keywords.Length < 1 || description.Length < 1)
-                {
-                    MessageBox.Show("Please fill out all text fields!", "Warning");
-                    return;
-                }
-                numChanges = descriptionAutofillMISO(colSrc, keywords, colDest, description, sheet);
-            }
-            else if (dlg.IsMIMO)
-            {
-                List<string> keywords = dlg.KeywordList;
-                List<string> descriptions = dlg.DescriptionList;
+            // Do multiple matching
+            List<string> keywords = dlg.KeywordList;
+            List<string> descriptions = dlg.DescriptionList;
 
 
-                if (dlg.UseOldMatchingAlgorithm)
-                {
-                    numChanges = descriptionAutofillMIMO_old(colSrc, colDest, keywords, descriptions);
-                }
-                else
-                {
-                    numChanges = descriptionAutofillMIMO(colSrc, colDest, keywords, descriptions);
-                }
+            if (dlg.UseOldMatchingAlgorithm)
+            {
+                numChanges = descriptionAutofillMIMO_old(colSrc, colDest, keywords, descriptions);
             }
+            else
+            {
+                numChanges = descriptionAutofillMIMO(colSrc, colDest, keywords, descriptions);
+            }
+
 
             // Tell the user how many cells were modified.
             NotifyChangesToColumn(destinationColumnText, numChanges);
@@ -356,59 +343,6 @@ namespace BookBuddy
             return true;
         }
 
-        private void group1_DialogLauncherClick(object sender, RibbonControlEventArgs e)
-        {
-
-        }
-
-        /* descriptionAutofillMISO
-         * 
-         * 
-         * Fills ONE description for multiple keywords 
-         * 
-         *   keyword1 ---+-> description1
-         *   keyword2 --+
-         *   keyword3 -+ 
-         */
-        private int descriptionAutofillMISO(int colSrc, string sourceKeywords, int colDest, string replacementText, Worksheet sheet)
-        {
-            // Split the space-separated keywords into an array
-            string[] keywords = sourceKeywords.Split(' ');
-            int replacements = 0;
-
-            int numRows = sheet.UsedRange.Rows.Count;
-
-            // Loop through each row in the source column
-            for (int i = 1; i <= numRows; i++)
-            {
-                Range sourceCell = (Excel.Range)sheet.Cells[i, colSrc];
-
-                // Skip empty cells or we'll get a null reference 
-                if (sourceCell.Value2 == null)
-                {
-                    continue;
-                }
-                string cellValue = sourceCell.Value2.ToString() ?? "";
-
-                // Check if any keyword is present in the cell value
-                foreach (string keyword in keywords)
-                {
-                    if (!string.IsNullOrEmpty(keyword) && cellValue.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        // Replace the value in the destination column
-                        Range destinationCell = (Range)sheet.Cells[i, colDest];
-                        destinationCell.Value2 = replacementText;
-
-                        // Increment the counter for replacements
-                        replacements++;
-                        break; // No need to check further keywords for this cell
-                    }
-                }
-            }
-
-            // Return the number of replacements made
-            return replacements;
-        }
 
 
         /* descriptionAutofillMIMO
