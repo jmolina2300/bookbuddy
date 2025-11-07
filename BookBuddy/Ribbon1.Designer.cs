@@ -74,7 +74,7 @@
             this.group1.Items.Add(this.btn_go);
             this.group1.Label = "Transaction Description Utilities";
             this.group1.Name = "group1";
-            this.group1.DialogLauncherClick += new System.EventHandler<Microsoft.Office.Tools.Ribbon.RibbonControlEventArgs>(this.group1_DialogLauncherClick);
+
             // 
             // btn_go
             // 
