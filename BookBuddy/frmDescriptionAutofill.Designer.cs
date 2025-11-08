@@ -36,11 +36,11 @@
             this.btnOKMIMO = new System.Windows.Forms.Button();
             this.btnImportCSV = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Source = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.chkUseOldMatchingAlgorithm = new System.Windows.Forms.CheckBox();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.Source.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -129,16 +129,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(442, 279);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Keyword";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Autofill Description";
-            this.Column2.Name = "Column2";
+            this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
             // 
             // Source
             // 
@@ -171,6 +162,16 @@
             this.chkUseOldMatchingAlgorithm.TabIndex = 12;
             this.chkUseOldMatchingAlgorithm.Text = "Use old matching algorithm";
             this.chkUseOldMatchingAlgorithm.UseVisualStyleBackColor = true;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "KEYWORD";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "DEST1";
+            this.Column2.Name = "Column2";
             // 
             // frmDescriptionAutofill
             // 
@@ -212,8 +213,8 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnOKMIMO;
         private System.Windows.Forms.Button btnCancel2;
+        private System.Windows.Forms.CheckBox chkUseOldMatchingAlgorithm;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.CheckBox chkUseOldMatchingAlgorithm;
     }
 }

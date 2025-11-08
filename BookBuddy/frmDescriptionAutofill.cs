@@ -113,7 +113,8 @@ namespace BookBuddy
 
                 // Add columns to the DataGridView
                 dataGridView1.Columns.Add("Keyword", "Keyword");
-                dataGridView1.Columns.Add("AutofillDescription", "Autofill Description");
+                dataGridView1.Columns.Add("DEST1", "DEST1");
+                dataGridView1.Rows.Add("","");
 
                 // Loop through Excel rows and populate the DataGridView
                 for (int row = 1; row <= range.Rows.Count; row++)
@@ -127,6 +128,82 @@ namespace BookBuddy
                     {
                         dataGridView1.Rows.Add(sourceText, replacement);
                     }
+                }
+
+
+
+                //string msg = String.Format("This sheet contains {0} rows and {1} columns.", range.Rows.Count, range.Columns.Count);
+                //MessageBox.Show(msg,"asd",MessageBoxButtons.OKCancel,MessageBoxIcon.Asterisk);
+
+
+                int nextColumn = 3;
+                int nextRow = 2;
+                int rowOffset = 1;
+                int nextDestinationNumber = 2;
+
+                /* Row indices epxlanation:
+                 * 
+                 * DataGridView.Rows     -->  0-based indexing
+                 * DataGridView.Columns  -->  0-based indexing
+                 * 
+                 * Excel.Range.Rows      -->  1-based indexing
+                 * 
+                 */
+
+                // If there are more columns, then it is a multi-destination file
+                if (range.Columns.Count > 2)
+                {
+                    // load up the rest of the columns
+                    for (int column = nextColumn; column < range.Columns.Count+1; column++)
+                    {
+                        // Name the column and increment the destination number
+                        string columnName = "DEST" + nextDestinationNumber;
+                        dataGridView1.Columns.Add(columnName, columnName);
+                        nextDestinationNumber += 1;
+
+
+                        // Then step down the column data and put it into the data grid
+                        for (int row = 1; row <= range.Rows.Count; row++)
+                        {
+                            string cellValue = null;
+                            try
+                            {
+                                /* Read cell values
+                                 * 
+                                 * Excel uses 1-based indexing, which works in our favor because
+                                 * we want the data to start after the 1st row of the DataGridView
+                                 * which is used for the name of the excel column destination.
+                                 * 
+                                 */
+                                cellValue = (range.Cells[row, column] as Range).Value2.ToString();
+
+
+                            }
+                            catch
+                            {
+                            }
+
+                            // Only add rows that are not null
+                            if (string.IsNullOrEmpty(cellValue))
+                            {
+                                dataGridView1.Rows[row].Cells[columnName].Value = "";
+                            }
+                            else
+                            {
+                                dataGridView1.Rows[row].Cells[columnName].Value = cellValue;
+                            }
+
+                        }
+                    }
+
+
+
+                }
+
+                // Color in the top row because it is a special field
+                foreach (DataGridViewCell cell in dataGridView1.Rows[0].Cells)
+                {
+                    cell.Style.BackColor = Color.SkyBlue;
                 }
 
                 MessageBox.Show("Data loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -224,6 +301,20 @@ namespace BookBuddy
         private void txtDestinationColumn_TextChanged(object sender, EventArgs e)
         {
             txtDestinationColumn.BackColor = ColorOK;
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            int selectedRow = e.Row.Index;
+            if (selectedRow == 0)
+            {
+                return;
+            }
         }
 
 
