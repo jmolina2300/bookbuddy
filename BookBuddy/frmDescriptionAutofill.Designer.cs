@@ -28,59 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtSourceColumn = new System.Windows.Forms.TextBox();
-            this.txtDestinationColumn = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.btnCancel2 = new System.Windows.Forms.Button();
             this.btnOKMIMO = new System.Windows.Forms.Button();
             this.btnImportCSV = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Source = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.chkUseOldMatchingAlgorithm = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.Source.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 23);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(42, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Column";
-            // 
-            // txtSourceColumn
-            // 
-            this.txtSourceColumn.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtSourceColumn.Location = new System.Drawing.Point(58, 20);
-            this.txtSourceColumn.Name = "txtSourceColumn";
-            this.txtSourceColumn.Size = new System.Drawing.Size(26, 20);
-            this.txtSourceColumn.TabIndex = 1;
-            this.txtSourceColumn.TextChanged += new System.EventHandler(this.txtSourceColumn_TextChanged);
-            // 
-            // txtDestinationColumn
-            // 
-            this.txtDestinationColumn.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtDestinationColumn.Location = new System.Drawing.Point(54, 20);
-            this.txtDestinationColumn.Name = "txtDestinationColumn";
-            this.txtDestinationColumn.Size = new System.Drawing.Size(26, 20);
-            this.txtDestinationColumn.TabIndex = 3;
-            this.txtDestinationColumn.TextChanged += new System.EventHandler(this.txtDestinationColumn_TextChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 23);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(42, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "Column";
             // 
             // btnCancel2
             // 
@@ -125,64 +81,44 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2});
-            this.dataGridView1.Location = new System.Drawing.Point(14, 116);
+            this.dataGridView1.Location = new System.Drawing.Point(14, 60);
+            this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(442, 279);
+            this.dataGridView1.Size = new System.Drawing.Size(442, 335);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
             // 
-            // Source
+            // label1
             // 
-            this.Source.Controls.Add(this.label5);
-            this.Source.Controls.Add(this.txtSourceColumn);
-            this.Source.Location = new System.Drawing.Point(14, 19);
-            this.Source.Name = "Source";
-            this.Source.Size = new System.Drawing.Size(122, 50);
-            this.Source.TabIndex = 10;
-            this.Source.TabStop = false;
-            this.Source.Text = "Source";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.txtDestinationColumn);
-            this.groupBox3.Location = new System.Drawing.Point(168, 19);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(113, 50);
-            this.groupBox3.TabIndex = 11;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Destination";
-            // 
-            // chkUseOldMatchingAlgorithm
-            // 
-            this.chkUseOldMatchingAlgorithm.AutoSize = true;
-            this.chkUseOldMatchingAlgorithm.Location = new System.Drawing.Point(14, 93);
-            this.chkUseOldMatchingAlgorithm.Name = "chkUseOldMatchingAlgorithm";
-            this.chkUseOldMatchingAlgorithm.Size = new System.Drawing.Size(153, 17);
-            this.chkUseOldMatchingAlgorithm.TabIndex = 12;
-            this.chkUseOldMatchingAlgorithm.Text = "Use old matching algorithm";
-            this.chkUseOldMatchingAlgorithm.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(403, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Fill out the table below or import an Excel document with the desired word mappin" +
+                "gs.";
             // 
             // Column1
             // 
             this.Column1.HeaderText = "KEYWORD";
             this.Column1.Name = "Column1";
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column2
             // 
-            this.Column2.HeaderText = "DEST1";
+            this.Column2.HeaderText = "OUTPUT";
             this.Column2.Name = "Column2";
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // frmDescriptionAutofill
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(472, 446);
-            this.Controls.Add(this.chkUseOldMatchingAlgorithm);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel2);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnOKMIMO);
-            this.Controls.Add(this.Source);
             this.Controls.Add(this.btnImportCSV);
             this.Controls.Add(this.dataGridView1);
             this.MaximizeBox = false;
@@ -191,11 +127,8 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Multiple Description Autofill";
+            this.Load += new System.EventHandler(this.frmDescriptionAutofill_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.Source.ResumeLayout(false);
-            this.Source.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,17 +136,11 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtSourceColumn;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtDestinationColumn;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnImportCSV;
-        private System.Windows.Forms.GroupBox Source;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnOKMIMO;
         private System.Windows.Forms.Button btnCancel2;
-        private System.Windows.Forms.CheckBox chkUseOldMatchingAlgorithm;
+        public System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }

@@ -112,21 +112,34 @@ namespace BookBuddy
                 dataGridView1.Columns.Clear();
 
                 // Add columns to the DataGridView
-                dataGridView1.Columns.Add("Keyword", "Keyword");
-                dataGridView1.Columns.Add("DEST1", "DEST1");
+                dataGridView1.Columns.Add("KEYWORD", "KEYWORD");
+                dataGridView1.Columns.Add("OUTPUT1", "OUTPUT1");
                 dataGridView1.Rows.Add("","");
 
                 // Loop through Excel rows and populate the DataGridView
                 for (int row = 1; row <= range.Rows.Count; row++)
                 {
-                    // Read cell values (Excel uses 1-based index)
-                    string sourceText = (range.Cells[row, 1] as Range).Value2.ToString();
-                    string replacement = (range.Cells[row, 2] as Range).Value2.ToString();
+                    string sourceText = null;
+                    string replacement = null;
+                    try
+                    {
+
+                        // Read cell values (Excel uses 1-based index)
+                        sourceText = (range.Cells[row, 1] as Range).Value2.ToString();
+                        replacement = (range.Cells[row, 2] as Range).Value2.ToString();
+                    }
+                    catch
+                    {
+                    }
 
                     // Only add rows that are not null
                     if (!string.IsNullOrEmpty(sourceText) && !string.IsNullOrEmpty(replacement))
                     {
                         dataGridView1.Rows.Add(sourceText, replacement);
+                    }
+                    else
+                    {
+                        dataGridView1.Rows.Add("", "");
                     }
                 }
 
@@ -137,8 +150,6 @@ namespace BookBuddy
 
 
                 int nextColumn = 3;
-                int nextRow = 2;
-                int rowOffset = 1;
                 int nextDestinationNumber = 2;
 
                 /* Row indices epxlanation:
@@ -157,7 +168,7 @@ namespace BookBuddy
                     for (int column = nextColumn; column < range.Columns.Count+1; column++)
                     {
                         // Name the column and increment the destination number
-                        string columnName = "DEST" + nextDestinationNumber;
+                        string columnName = "OUTPUT" + nextDestinationNumber;
                         dataGridView1.Columns.Add(columnName, columnName);
                         nextDestinationNumber += 1;
 
@@ -177,35 +188,24 @@ namespace BookBuddy
                                  */
                                 cellValue = (range.Cells[row, column] as Range).Value2.ToString();
 
-
                             }
                             catch
                             {
                             }
 
-                            // Only add rows that are not null
-                            if (string.IsNullOrEmpty(cellValue))
-                            {
-                                dataGridView1.Rows[row].Cells[columnName].Value = "";
-                            }
-                            else
+                            // Only add row values that are not empty
+                            if (!string.IsNullOrEmpty(cellValue))
                             {
                                 dataGridView1.Rows[row].Cells[columnName].Value = cellValue;
+                                
                             }
 
                         }
                     }
-
-
-
                 }
 
-                // Color in the top row because it is a special field
-                foreach (DataGridViewCell cell in dataGridView1.Rows[0].Cells)
-                {
-                    cell.Style.BackColor = Color.SkyBlue;
-                }
-
+                // Make the table unsortable because it will mess up the column name thing
+                MakeDataGridViewUnsortable();
                 MessageBox.Show("Data loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -223,46 +223,134 @@ namespace BookBuddy
         }
 
 
-        /*
-         * BothColumnsFilled
-         * 
-         * Check if both column fields have been filled out.
-         * 
-         */
-        private bool BothColumnsFilled()
+        private void MakeDataGridViewUnsortable()
         {
-            bool missingColumnA = string.IsNullOrEmpty(txtSourceColumn.Text);
-            bool missingColumnB = string.IsNullOrEmpty(txtDestinationColumn.Text);
-            if (missingColumnA || missingColumnB)
+            // Loop through EVERY column and make it unsortable
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+        }
+
+        private bool ValidateMappingHeader()
+        {
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("Error: No rows in the table!", "Empty",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            else
+
+            System.Collections.Hashtable usedColumns = new System.Collections.Hashtable();
+            int srcIndex = -1;
+            for (int col = 0; col < dataGridView1.Columns.Count; col++)
             {
-                return true;
+                string input = "";
+                if (dataGridView1.Rows[0].Cells[col].Value != null)
+                {
+                    input = dataGridView1.Rows[0].Cells[col].Value.ToString().Trim();
+                }
+
+                // SOURCE COLUMN (col 0) REQUIRED
+                if (col == 0)
+                {
+                    if (string.IsNullOrEmpty(input))
+                    {
+                        MessageBox.Show(
+                            "Error: First cell (source column) cannot be empty!\n\nEnter the column letter that contains keywords (e.g. A).",
+                            "Source Missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+
+                    // Index of source column gets assigned here
+                    srcIndex = ColumnNameToIndex(input);
+                    if (srcIndex < 0)
+                    {
+                        MessageBox.Show(
+                            "Error: Source column \"" + input + "\" is invalid!",
+                            "Invalid Source", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                    continue;
+                }
+
+
+                // Destination columns (col > 0)
+                if (string.IsNullOrEmpty(input))
+                {
+                    // BLANK = SKIP THIS COLUMN  (allowed)
+                    continue;
+                }
+
+
+                int destIndex = ColumnNameToIndex(input);
+                if (destIndex < 0)
+                {
+                    MessageBox.Show(
+                        "Error: Column " + (col + 1).ToString() +
+                        " has invalid name: \"" + input + "\"\n\nUse A, Z, AA, XFD, or leave blank to skip.",
+                        "Invalid Column", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+
+
+                // Check for duplicates
+                if (usedColumns.ContainsKey(destIndex))
+                {
+                    MessageBox.Show(
+                        "Error: Column \"" + input + "\" is used more than once!\n\nChoose a different destination or leave one blank.",
+                        "Duplicate Column", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                // Check If user is trying to overwrite the source column (allowed)
+                if (destIndex == srcIndex)
+                {
+                    DialogResult dlgResult = MessageBox.Show(
+                                    "Warning: Column \"" + input + "\" is used as both the source and destination.\nIf you click OK, the source column will be overwritten.\n\nDo you want to proceed?",
+                                    "Source Overwrite", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                    if (dlgResult != DialogResult.OK)
+                    {
+                        return false;
+                    }
+                }
+
+                usedColumns.Add(destIndex, true);
             }
+
+            // Require at least one output column
+            if (usedColumns.Count == 0)
+            {
+                MessageBox.Show(
+                    "Warning: No output columns selected!\n\nFill at least one column letter (or cancel).",
+                    "No Output", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
         }
 
-        private void colorColumnBoxesBasedOnContent()
+        public static int ColumnNameToIndex(string name)
         {
-            if (string.IsNullOrEmpty(txtSourceColumn.Text))
+            var upperCaseName = name.ToUpper();
+            var number = 0;
+            var pow = 1;
+            if (!System.Text.RegularExpressions.Regex.IsMatch(name, @"^[a-zA-Z]+$"))
             {
-                txtSourceColumn.BackColor = ColorERR;
+                return -1;
             }
-            else
+            for (var i = upperCaseName.Length - 1; i >= 0; i--)
             {
-                txtSourceColumn.BackColor = ColorOK;
+                number += (upperCaseName[i] - 'A' + 1) * pow;
+                pow *= 26;
             }
-
-            if (string.IsNullOrEmpty(txtDestinationColumn.Text))
-            {
-                txtDestinationColumn.BackColor = ColorERR;
-            }
-            else
-            {
-                txtDestinationColumn.BackColor = ColorOK;
-            }
+            return number;
         }
+
+
+
+
 
         /*
          * btnOKMIMO_Click
@@ -272,40 +360,45 @@ namespace BookBuddy
          */
         private void btnOKMIMO_Click(object sender, EventArgs e)
         {
-            // Color the text boxes based on whether they have text in them
-            this.colorColumnBoxesBasedOnContent();
-
-            // Make sure both column fields are filled out
-            if (!BothColumnsFilled())
+            if (!ValidateMappingHeader())
             {
-                MessageBox.Show("Please choose both a source and destination column", "Warning");
                 return;
             }
 
-            // Capture values before closing
-            SourceColumn = txtSourceColumn.Text;
-            DestinationColumn = txtDestinationColumn.Text;
-
-            // Close the form with OK result
-            this.UseOldMatchingAlgorithm = chkUseOldMatchingAlgorithm.Checked;
             this.DialogResult = DialogResult.OK;
             this.ExtractDataFromGrid();
             this.Close();
         }
 
-        private void txtSourceColumn_TextChanged(object sender, EventArgs e)
-        {
-            txtSourceColumn.BackColor = ColorOK;
-        }
 
-        private void txtDestinationColumn_TextChanged(object sender, EventArgs e)
-        {
-            txtDestinationColumn.BackColor = ColorOK;
-        }
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            // Only care about the first row (header row)
+            if (e.RowIndex != 0) return;
 
+            DataGridViewCell cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+            if (cell.Value != null)
+            {
+                string text = cell.Value.ToString();
+                string upper = text.ToUpper();
+
+                // Only update if it actually changed (avoids infinite loop)
+                if (text != upper)
+                {
+                    // Temporarily disable event to avoid event recursion
+                    dataGridView1.CellValueChanged -= dataGridView1_CellValueChanged;
+
+                    cell.Value = upper;
+
+                    // Re-enable event
+                    dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
+                }
+            }
+
+            // Update the color
+            ColorCodeHeaderRow();
         }
 
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
@@ -317,6 +410,116 @@ namespace BookBuddy
             }
         }
 
+        private void ColorCodeHeaderRow()
+        {
+            if (dataGridView1.Rows.Count == 0) return;
+
+            DataGridViewRow headerRow = dataGridView1.Rows[0];
+
+            // Reset all cells
+            for (int col = 0; col < dataGridView1.Columns.Count; col++)
+            {
+                DataGridViewCell cell = headerRow.Cells[col];
+                cell.Style.BackColor = System.Drawing.Color.White;
+                cell.Style.ForeColor = System.Drawing.Color.Black;
+                cell.ToolTipText = "";
+            }
+
+            for (int col = 0; col < dataGridView1.Columns.Count; col++)
+            {
+                string input = "";
+                if (headerRow.Cells[col].Value != null)
+                {
+                    input = headerRow.Cells[col].Value.ToString().Trim().ToUpper();
+                }
+
+                DataGridViewCell currentCell = headerRow.Cells[col];
+
+                // Source column check
+                if (col == 0)
+                {
+                    if (string.IsNullOrEmpty(input))
+                    {
+                        currentCell.Style.BackColor = System.Drawing.Color.Salmon;
+                        currentCell.ToolTipText = "SOURCE REQUIRED";
+                    }
+                    else
+                    {
+                        int idx = ColumnNameToIndex(input);
+                        if (idx > 0 && idx <= 16384)
+                            currentCell.Style.BackColor = System.Drawing.Color.LightGreen;
+                        else
+                            currentCell.Style.BackColor = System.Drawing.Color.Salmon;
+                    }
+
+                    // Done with source column
+                    continue;
+                }
+
+                // Check all destination columns
+                if (string.IsNullOrEmpty(input))
+                {
+                    currentCell.Style.BackColor = System.Drawing.Color.White;
+                    currentCell.ToolTipText = "Skipped";
+                    continue;
+                }
+
+                int currentIdx = ColumnNameToIndex(input);
+
+                if (currentIdx <= 0 || currentIdx > 16384)
+                {
+                    currentCell.Style.BackColor = System.Drawing.Color.Salmon;
+                    currentCell.ToolTipText = "Invalid column";
+                    continue;
+                }
+
+                // CHECK DUPLICATES BY LOOPING THROUGH ALL OTHER CELLS
+                bool isDuplicate = false;
+                for (int otherCol = 1; otherCol < dataGridView1.Columns.Count; otherCol++)
+                {
+                    if (otherCol == col)
+                    {
+                        continue; // skip self
+                    }
+
+                    string otherInput = "";
+                    if (headerRow.Cells[otherCol].Value != null)
+                    {
+                        otherInput = headerRow.Cells[otherCol].Value.ToString().Trim().ToUpper();
+                    }
+
+                    if (string.IsNullOrEmpty(otherInput))
+                    {
+                        continue;
+                    }
+
+                    int otherIdx = ColumnNameToIndex(otherInput);
+                    if (otherIdx == currentIdx)
+                    {
+                        isDuplicate = true;
+                        // Also mark the OTHER cell as duplicate
+                        headerRow.Cells[otherCol].Style.BackColor = System.Drawing.Color.Orange;
+                        headerRow.Cells[otherCol].ToolTipText = "DUPLICATE";
+                    }
+                }
+
+                if (isDuplicate)
+                {
+                    currentCell.Style.BackColor = System.Drawing.Color.Orange;
+                    currentCell.ToolTipText = "DUPLICATE";
+                }
+                else
+                {
+                    currentCell.Style.BackColor = System.Drawing.Color.LightGreen;
+                    currentCell.ToolTipText = "Valid";
+                }
+            }
+        }
+
+        private void frmDescriptionAutofill_Load(object sender, EventArgs e)
+        {
+            
+        }
 
 
     }

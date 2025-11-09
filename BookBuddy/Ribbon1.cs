@@ -151,40 +151,10 @@ namespace BookBuddy
                 return;
             }
 
-            // User clicked OK. Retrieve values from the form...
-            string sourceColumnText = dlg.SourceColumn;
-            string destinationColumnText = dlg.DestinationColumn;
-            Worksheet sheet = Globals.ThisAddIn.GetActiveWorkSheet();  // Get the worksheet
-
-            // Make sure the rows and columns are OK
-            if (!RowsAndColumnsAreOK(sourceColumnText, destinationColumnText, sheet))
-            {
-                return;
-            }
-
-            // Everything is fine. Do the text replacement.
-            int colSrc = ColumnNameToIndex(sourceColumnText);          // Get the source column
-            int colDest = ColumnNameToIndex(destinationColumnText);    // Get the destination column
-            int numRows = sheet.UsedRange.Rows.Count;
-            int numChanges = 0;
-
-            // Do multiple matching
-            List<string> keywords = dlg.KeywordList;
-            List<string> descriptions = dlg.DescriptionList;
-
-
-            if (dlg.UseOldMatchingAlgorithm)
-            {
-                numChanges = descriptionAutofillMIMO_old(colSrc, colDest, keywords, descriptions);
-            }
-            else
-            {
-                numChanges = descriptionAutofillMIMO(colSrc, colDest, keywords, descriptions);
-            }
-
+            int numChanges = descriptionAutofillMIMO_MultiColumn(dlg.dataGridView1);
 
             // Tell the user how many cells were modified.
-            NotifyChangesToColumn(destinationColumnText, numChanges);
+            MessageBox.Show(numChanges + " cells modified.", "Notice");
         }
 
         private void btn_go_signFlip_Click(object sender, RibbonControlEventArgs e)
@@ -355,65 +325,125 @@ namespace BookBuddy
          *   keyword3 -> description3
          * 
          */
-        private int descriptionAutofillMIMO(int colSrc, int colDest, List<string> sourceTexts, List<string> replacements)
+        private int descriptionAutofillMIMO_MultiColumn(DataGridView dgvMapping)
         {
-
+            if (dgvMapping == null || dgvMapping.Rows.Count < 2)
+                throw new ArgumentException("DataGridView must have at least 2 rows.");
 
             Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Worksheet activeSheet = (Excel.Worksheet)excelApp.ActiveSheet;
-
+            Excel.Worksheet activeSheet =(Excel.Worksheet)excelApp.ActiveSheet;
             Excel.Range usedRange = activeSheet.UsedRange;
 
-            // Build a simple list of (source, replacement) pairs
-            System.Collections.ArrayList mapList = new System.Collections.ArrayList();
 
-            for (int i = 0; i < sourceTexts.Count; i++)
+            // 1. Read column mappings from FIRST ROW of DataGridView
+            int srcColExcel = 0;
+            var destColExcelList = new System.Collections.ArrayList(); // int list
+
+            for (int c = 0; c < dgvMapping.Columns.Count; c++)
             {
-                string src = (sourceTexts[i] ?? "").Trim();
-                if (src.Length == 0) continue;               // skip empty entries
+                string header = (dgvMapping.Rows[0].Cells[c].Value ?? "").ToString().Trim().ToUpper();
 
-                string repl = (replacements[i] ?? "").Trim();
+                if (string.IsNullOrEmpty(header)) continue;
 
-                // store length + texts so we can sort later
-                mapList.Add(new object[] { src.Length, src, repl });
+                int excelCol = ColumnNameToIndex(header); // Column index
+
+                if (c == 0)
+                {
+                    srcColExcel = excelCol;
+                }
+                else
+                {
+                    destColExcelList.Add(excelCol);
+                }
             }
 
+            if (srcColExcel == 0)
+                throw new Exception("First column in row 1 must contain source column letter (e.g. A).");
 
-            // Sort by length DESCENDING. Use custom comparer defined below.
-            mapList.Sort(new LengthComparer());
+            if (destColExcelList.Count == 0)
+                throw new Exception("At least one destination column letter required in row 1.");
 
- 
-            // Walk the sheet and apply the first (longest) match
+            
+            // 2. Build mapping list: source -> array of replacements
+            var mappings = new System.Collections.ArrayList();  // { length, source, repl1, repl2, ... }
+
+            for (int r = 1; r < dgvMapping.Rows.Count; r++)     // start at row 1 (0-based => second row)
+            {
+                DataGridViewRow dgvRow = dgvMapping.Rows[r];
+                if (dgvRow.IsNewRow) continue;
+
+                string sourceText = (dgvRow.Cells[0].Value ?? "").ToString().Trim();
+                if (string.IsNullOrEmpty(sourceText)) continue;
+
+                var rowData = new System.Collections.ArrayList();
+                rowData.Add(sourceText.Length);     // 0: length for sorting
+                rowData.Add(sourceText);            // 1: source
+
+                for (int c = 1; c < dgvRow.Cells.Count; c++)
+                {
+                    string val = (dgvRow.Cells[c].Value ?? "").ToString().Trim();
+                    rowData.Add(val);
+                }
+
+                mappings.Add(rowData);
+            }
+
+            // Sort: longest source first
+            mappings.Sort(new LengthComparerMulti());
+
+            
+
+            // 3. Apply to Excel sheet
             int numChanges = 0;
-
             for (int row = 1; row <= usedRange.Rows.Count; row++)
             {
-                Excel.Range cellSrc = (Excel.Range)usedRange.Cells[row, colSrc];
+                Excel.Range srcCell = (Excel.Range)usedRange.Cells[row, srcColExcel];
 
-                Excel.Range cellDest = (Excel.Range)usedRange.Cells[row, colDest];
-
-                if (cellSrc.Value2 == null) continue;
-
-                string cellValue = cellSrc.Value2.ToString().Trim();
-
-                
-                
-                for (int m = 0; m < mapList.Count; m++)
+                if (srcCell.Value2 == null)
                 {
-                    object[] entry = (object[])mapList[m];
-                    string mapSrc = (string)entry[1];
+                    continue;
+                }
 
-                    // case-insensitive Contains check
-                    if (cellValue.IndexOf(mapSrc, StringComparison.OrdinalIgnoreCase) >= 0)
+                string cellValue = srcCell.Value2.ToString().Trim();
+                bool matched = false;
+                foreach (System.Collections.ArrayList map in mappings)
+                {
+                    string mapSource = (string)map[1];
+
+                    if (cellValue.IndexOf(mapSource, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
-                        cellDest.Value2 = (string)entry[2];
+                        // Write to ALL destination columns
+                        for (int i = 0; i < destColExcelList.Count; i++)
+                        {
+                            int destCol = (int)destColExcelList[i];
+                            string replacement = (string)map[2 + i]; // 2 = source, 3+ = outputs
+
+                            Excel.Range destCell = (Excel.Range)usedRange.Cells[row, destCol];
+
+                            destCell.Value2 = replacement;
+                        }
+
                         numChanges++;
-                        break;              // stop after the first (longest) match
+                        matched = true;
+                        break; // longest match wins
                     }
                 }
             }
 
             return numChanges;
+        }
+
+        
+        private int ColumnLetterToNumber(string columnLetter)
+        {
+            columnLetter = columnLetter.ToUpper();
+            int result = 0;
+            for (int i = 0; i < columnLetter.Length; i++)
+            {
+                result *= 26;
+                result += (columnLetter[i] - 'A' + 1);
+            }
+            return result;
         }
 
 
@@ -448,6 +478,28 @@ namespace BookBuddy
                 }
             }
             return numChanges;
+        }
+
+
+
+
+        /* class: LengthComparerMulti
+         * 
+         * Simple comparer that sorts by the first element (the length) descending
+         * 
+         */
+        private class LengthComparerMulti : System.Collections.IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                System.Collections.ArrayList a = (System.Collections.ArrayList)x;
+                System.Collections.ArrayList b = (System.Collections.ArrayList)y;
+
+                int lenA = (int)a[0];
+                int lenB = (int)b[0];
+
+                return lenB.CompareTo(lenA); // longer first
+            }
         }
 
 
