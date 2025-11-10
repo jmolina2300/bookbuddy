@@ -8,9 +8,9 @@ using Microsoft.Office.Tools.Excel;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BookBuddy")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Bookkeeper's toolkit for excel")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("RedCell")]
 [assembly: AssemblyProduct("BookBuddy")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]

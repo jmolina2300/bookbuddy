@@ -26,8 +26,8 @@
     <RootNamespace>BookBuddy</RootNamespace>
     <AssemblyName>BookBuddy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ManifestCertificateThumbprint>0293944344F87B7E3C6D04FB705CCB16CCDF17FB</ManifestCertificateThumbprint>
-    <ManifestKeyFile>BookBuddy_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>B4A4871FF9A1CB142368661DD85DD20A02DD6E82</ManifestCertificateThumbprint>
+    <ManifestKeyFile>BookBuddy_1_TemporaryKey.pfx</ManifestKeyFile>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <SignAssembly>false</SignAssembly>
@@ -37,7 +37,7 @@
     <InstallUrl>
     </InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.0</ApplicationVersion>
+    <ApplicationVersion>1.1.0.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -209,6 +209,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="BookBuddy_1_TemporaryKey.pfx" />
     <None Include="BookBuddy_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
