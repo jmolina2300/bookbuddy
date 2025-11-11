@@ -96,6 +96,7 @@ namespace BookBuddy
             Workbook workbook = null;
             Worksheet worksheet = null;
             Range range = null;
+            int emptySourceCells = 0;
 
             try
             {
@@ -123,24 +124,28 @@ namespace BookBuddy
                     string replacement = null;
                     try
                     {
-
                         // Read cell values (Excel uses 1-based index)
                         sourceText = (range.Cells[row, 1] as Range).Value2.ToString();
+                    }
+                    catch { }
+
+                    try
+                    {
                         replacement = (range.Cells[row, 2] as Range).Value2.ToString();
                     }
-                    catch
-                    {
-                    }
+                    catch { }
 
-                    // Only add rows that are not null
-                    if (!string.IsNullOrEmpty(sourceText) && !string.IsNullOrEmpty(replacement))
+                    // Add rows no matter what => If a cell is empty, then add empty cells.
+                    if (string.IsNullOrEmpty(sourceText))
                     {
-                        dataGridView1.Rows.Add(sourceText, replacement);
+                        sourceText = "";
+                        emptySourceCells++;
                     }
-                    else
+                    if (string.IsNullOrEmpty(replacement))
                     {
-                        dataGridView1.Rows.Add("", "");
+                        replacement = "";
                     }
+                    dataGridView1.Rows.Add(sourceText, replacement);
                 }
 
 
@@ -207,6 +212,11 @@ namespace BookBuddy
                 // Make the table unsortable because it will mess up the column name thing
                 MakeDataGridViewUnsortable();
                 MessageBox.Show("Data loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (emptySourceCells != 0)
+                {
+                    MessageBox.Show("One or more cells in the first column (the keyword column) of your sheet are empty.\nIf this is a mistake, then fix it now.\n\nOtherwise those entire rows will not be processed.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {

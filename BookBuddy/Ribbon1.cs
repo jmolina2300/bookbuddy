@@ -372,6 +372,7 @@ namespace BookBuddy
                 DataGridViewRow dgvRow = dgvMapping.Rows[r];
                 if (dgvRow.IsNewRow) continue;
 
+                // Source text (NOT ALLOWED to be empty string)
                 string sourceText = (dgvRow.Cells[0].Value ?? "").ToString().Trim();
                 if (string.IsNullOrEmpty(sourceText)) continue;
 
@@ -381,6 +382,7 @@ namespace BookBuddy
 
                 for (int c = 1; c < dgvRow.Cells.Count; c++)
                 {
+                    // Replacement text (ALLOWED to be empty string)
                     string val = (dgvRow.Cells[c].Value ?? "").ToString().Trim();
                     rowData.Add(val);
                 }
