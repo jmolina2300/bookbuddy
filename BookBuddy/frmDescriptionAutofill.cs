@@ -114,7 +114,7 @@ namespace BookBuddy
 
                 // Add columns to the DataGridView
                 dataGridView1.Columns.Add("KEYWORD", "KEYWORD");
-                dataGridView1.Columns.Add("OUTPUT1", "OUTPUT1");
+                dataGridView1.Columns.Add("AUTOFILL1", "AUTOFILL1");
                 dataGridView1.Rows.Add("","");
 
                 // Loop through Excel rows and populate the DataGridView
@@ -173,7 +173,7 @@ namespace BookBuddy
                     for (int column = nextColumn; column < range.Columns.Count+1; column++)
                     {
                         // Name the column and increment the destination number
-                        string columnName = "OUTPUT" + nextDestinationNumber;
+                        string columnName = "AUTOFILL" + nextDestinationNumber;
                         dataGridView1.Columns.Add(columnName, columnName);
                         nextDestinationNumber += 1;
 
@@ -256,9 +256,10 @@ namespace BookBuddy
             for (int col = 0; col < dataGridView1.Columns.Count; col++)
             {
                 string input = "";
-                if (dataGridView1.Rows[0].Cells[col].Value != null)
+                DataGridViewCell currentCell = dataGridView1.Rows[0].Cells[col];
+                if (currentCell.Value != null)
                 {
-                    input = dataGridView1.Rows[0].Cells[col].Value.ToString().Trim();
+                    input = currentCell.Value.ToString().Trim();
                 }
 
                 // SOURCE COLUMN (col 0) REQUIRED
@@ -269,6 +270,8 @@ namespace BookBuddy
                         MessageBox.Show(
                             "Error: First cell (source column) cannot be empty!\n\nEnter the column letter that contains keywords (e.g. A).",
                             "Source Missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        dataGridView1.ClearSelection();
+                        currentCell.Style.BackColor = Color.Salmon;
                         return false;
                     }
 

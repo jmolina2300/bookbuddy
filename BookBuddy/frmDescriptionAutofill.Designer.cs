@@ -94,10 +94,10 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(403, 13);
+            this.label1.Size = new System.Drawing.Size(407, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Fill out the table below or import an Excel document with the desired word mappin" +
-                "gs.";
+            this.label1.Text = "Fill out the table below or import an Excel document with the desired autofill ma" +
+                "ppings";
             // 
             // Column1
             // 
@@ -107,7 +107,7 @@
             // 
             // Column2
             // 
-            this.Column2.HeaderText = "OUTPUT";
+            this.Column2.HeaderText = "AUTOFILL";
             this.Column2.Name = "Column2";
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
@@ -121,7 +121,6 @@
             this.Controls.Add(this.btnOKMIMO);
             this.Controls.Add(this.btnImportCSV);
             this.Controls.Add(this.dataGridView1);
-            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(480, 480);
             this.Name = "frmDescriptionAutofill";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
