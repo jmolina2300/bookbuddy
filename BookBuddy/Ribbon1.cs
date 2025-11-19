@@ -327,107 +327,112 @@ namespace BookBuddy
          */
         private int descriptionAutofillMIMO_MultiColumn(DataGridView dgvMapping)
         {
-            if (dgvMapping == null || dgvMapping.Rows.Count < 2)
-                throw new ArgumentException("DataGridView must have at least 2 rows.");
-
             Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Worksheet activeSheet =(Excel.Worksheet)excelApp.ActiveSheet;
+            Excel.Worksheet activeSheet = (Excel.Worksheet)excelApp.ActiveSheet;
             Excel.Range usedRange = activeSheet.UsedRange;
 
 
-            // 1. Read column mappings from FIRST ROW of DataGridView
-            int srcColExcel = 0;
-            var destColExcelList = new System.Collections.ArrayList(); // int list
-
-            for (int c = 0; c < dgvMapping.Columns.Count; c++)
+            /* ----------------------------------------------------------------
+             * 1. Read header: map DGV column index -> Excel column number
+             * ----------------------------------------------------------------
+             */
+            int sourceExcelCol = 0;
+            System.Collections.ArrayList columnMapping = new System.Collections.ArrayList(); // [ { dgvCol, excelCol } ]
+            for (int dgvCol = 0; dgvCol < dgvMapping.Columns.Count; dgvCol++)
             {
-                string header = (dgvMapping.Rows[0].Cells[c].Value ?? "").ToString().Trim().ToUpper();
+                string header = (dgvMapping.Rows[0].Cells[dgvCol].Value ?? "").ToString().Trim().ToUpper();
 
-                if (string.IsNullOrEmpty(header)) continue;
-
-                int excelCol = ColumnNameToIndex(header); // Column index
-
-                if (c == 0)
+                if (dgvCol == 0)
                 {
-                    srcColExcel = excelCol;
+                    if (string.IsNullOrEmpty(header)) continue;
+                    sourceExcelCol = ColumnNameToIndex(header);
+                    if (sourceExcelCol <= 0) throw new Exception("Invalid source column: " + header);
                 }
                 else
                 {
-                    destColExcelList.Add(excelCol);
+                    if (!string.IsNullOrEmpty(header))
+                    {
+                        int excelCol = ColumnNameToIndex(header);
+                        if (excelCol <= 0) throw new Exception("Invalid destination column: " + header);
+                        columnMapping.Add(new int[] { dgvCol, excelCol }); // Store DGV col -> Excel col
+                    }
                 }
             }
 
-            if (srcColExcel == 0)
-                throw new Exception("First column in row 1 must contain source column letter (e.g. A).");
+            if (sourceExcelCol == 0) throw new Exception("Source column not specified.");
+            if (columnMapping.Count == 0) throw new Exception("No destination columns selected.");
 
-            if (destColExcelList.Count == 0)
-                throw new Exception("At least one destination column letter required in row 1.");
 
-            
-            // 2. Build mapping list: source -> array of replacements
-            var mappings = new System.Collections.ArrayList();  // { length, source, repl1, repl2, ... }
-
-            for (int r = 1; r < dgvMapping.Rows.Count; r++)     // start at row 1 (0-based => second row)
+            /* ----------------------------------------------------------------
+             * 2. Build mapping rules (source -> row data)
+             * ----------------------------------------------------------------
+             */
+            System.Collections.ArrayList mappings = new System.Collections.ArrayList();
+            for (int r = 1; r < dgvMapping.Rows.Count; r++)
             {
-                DataGridViewRow dgvRow = dgvMapping.Rows[r];
-                if (dgvRow.IsNewRow) continue;
+                DataGridViewRow row = dgvMapping.Rows[r];
+                if (row.IsNewRow) continue;
 
-                // Source text (NOT ALLOWED to be empty string)
-                string sourceText = (dgvRow.Cells[0].Value ?? "").ToString().Trim();
+                string sourceText = (row.Cells[0].Value ?? "").ToString().Trim();
                 if (string.IsNullOrEmpty(sourceText)) continue;
 
-                var rowData = new System.Collections.ArrayList();
-                rowData.Add(sourceText.Length);     // 0: length for sorting
+                System.Collections.ArrayList rowData = new System.Collections.ArrayList();
+                rowData.Add(sourceText.Length);     // 0: for sorting
                 rowData.Add(sourceText);            // 1: source
 
-                for (int c = 1; c < dgvRow.Cells.Count; c++)
+
+                // Copy all cells (even empty ones because we need alignment)
+                for (int c = 1; c < dgvMapping.Columns.Count; c++)
                 {
-                    // Replacement text (ALLOWED to be empty string)
-                    string val = (dgvRow.Cells[c].Value ?? "").ToString().Trim();
+                    string val = (row.Cells[c].Value ?? "").ToString().Trim();
                     rowData.Add(val);
                 }
 
                 mappings.Add(rowData);
             }
 
-            // Sort: longest source first
+
+
+            // Sort by length descending (longest match first)
             mappings.Sort(new LengthComparerMulti());
 
-            
 
-            // 3. Apply to Excel sheet
+
+            /* ----------------------------------------------------------------
+             * 3. Apply mappings
+             * ----------------------------------------------------------------
+             */
             int numChanges = 0;
+
             for (int row = 1; row <= usedRange.Rows.Count; row++)
             {
-                Excel.Range srcCell = (Excel.Range)usedRange.Cells[row, srcColExcel];
-
+                Excel.Range srcCell = (Excel.Range)usedRange.Cells[row, sourceExcelCol];
                 if (srcCell.Value2 == null)
                 {
                     continue;
                 }
 
+
                 string cellValue = srcCell.Value2.ToString().Trim();
-                bool matched = false;
                 foreach (System.Collections.ArrayList map in mappings)
                 {
-                    string mapSource = (string)map[1];
 
+                    string mapSource = (string)map[1];
                     if (cellValue.IndexOf(mapSource, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
-                        // Write to ALL destination columns
-                        for (int i = 0; i < destColExcelList.Count; i++)
+                        // Apply ONLY to the columns the user selected
+                        foreach (int[] mapping in columnMapping)
                         {
-                            int destCol = (int)destColExcelList[i];
-                            string replacement = (string)map[2 + i]; // 2 = source, 3+ = outputs
+                            int dgvCol = mapping[0];    // Which column in the DGV
+                            int excelCol = mapping[1];  // Which column in Excel
 
-                            Excel.Range destCell = (Excel.Range)usedRange.Cells[row, destCol];
-
+                            string replacement = (string)map[1 + dgvCol]; // 1 = source, then dgvCol offset
+                            Excel.Range destCell = (Excel.Range)usedRange.Cells[row, excelCol];
                             destCell.Value2 = replacement;
                         }
 
                         numChanges++;
-                        matched = true;
-                        break; // longest match wins
+                        break;
                     }
                 }
             }
